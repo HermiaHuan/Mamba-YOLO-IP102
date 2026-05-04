@@ -54,22 +54,82 @@ cd selective_scan && pip install . && cd ..
 pip install -v -e .
 ```
 
-#### 6. Prepare MSCOCO2017 Dataset
-Make sure your dataset structure as follows:
-```
-├── coco
-│   ├── annotations
-│   │   ├── instances_train2017.json
-│   │   └── instances_val2017.json
-│   ├── images
-│   │   ├── train2017
-│   │   └── val2017
-│   ├── labels
-│   │   ├── train2017
-│   │   ├── val2017
+#### 6. Prepare IP102 Dataset
+
+Download the official IP102 archive and put it in the project root as `archive.zip`.
+Then convert it into this project's YOLO detection layout:
+
+```bash
+python3 scripts/prepare_ip102_dataset.py --zip archive.zip --overwrite
 ```
 
-#### 7. Training Mamba-YOLO-T
+The generated dataset structure is:
+
+```text
+datasets/pest102/
+  images/train
+  images/val
+  images/test
+  labels/train
+  labels/val
+  labels/test
+  pest102.yaml
+  classes.txt
+```
+
+If the archive contains `classification/train|val|test/<class_id>/*.jpg`, the script creates whole-image pseudo boxes
+so the Mamba-YOLO detection pipeline can run. If the archive contains VOC XML annotations, the script converts the real
+bounding boxes into YOLO labels automatically.
+
+#### 7. Training Mamba-YOLO-T on IP102
+
+The default training command now uses `datasets/pest102/pest102.yaml`:
+
+```bash
+python3 mbyolo_train.py
+```
+
+Quick smoke test:
+
+```bash
+python3 mbyolo_train.py --epochs 1 --batch_size 2 --workers 0 --device 0
+```
+
+Validation and test:
+
+```bash
+python3 mbyolo_train.py --task val --device 0
+python3 mbyolo_train.py --task test --device 0
+```
+
+#### 8. Launch Web Demo
+
+Install the lightweight UI dependency:
+
+```bash
+pip install -r requirements-app.txt
+```
+
+Start the Gradio app:
+
+```bash
+python3 app.py
+```
+
+By default the app looks for:
+
+```text
+output_dir/pest102/mambayolo_t_pest102/weights/best.pt
+```
+
+You can override the inference weight with:
+
+```bash
+export MBYOLO_APP_MODEL=/path/to/best.pt
+python3 app.py
+```
+
+#### Original COCO Training Example
 ```bash
 python mbyolo_train.py --task train --data ultralytics/cfg/datasets/coco.yaml \
  --config ultralytics/cfg/models/mamba-yolo/Mamba-YOLO-T.yaml \
