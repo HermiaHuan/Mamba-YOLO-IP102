@@ -1,0 +1,106 @@
+[
+  {
+    "class_id": -1,
+    "class_name": "apple_scab",
+    "category_type": "disease",
+    "crop": "苹果",
+    "harm_or_symptom": "叶片和果实出现橄榄绿色到褐色病斑，严重时导致落叶和果面粗糙。",
+    "trigger_conditions": "春季低温高湿、降雨频繁和果园通风差时更易流行。",
+    "suggested_actions": "及时清除落叶病果，修剪增强通风透光，并在病害初发期轮换使用保护性和治疗性杀菌剂。",
+    "risk_rule": {
+      "count_thresholds": {"medium": 1, "high": 2, "critical": 4},
+      "confidence_thresholds": {"medium": 0.35, "high": 0.55, "critical": 0.75}
+    }
+  },
+  {
+    "class_id": -1,
+    "class_name": "apple_black_rot",
+    "category_type": "disease",
+    "crop": "苹果",
+    "harm_or_symptom": "果实出现黑腐斑块，叶片和枝条可形成坏死病斑。",
+    "trigger_conditions": "果园湿度高、病残体清理不及时、树势衰弱时发病更重。",
+    "suggested_actions": "及时摘除病果和枯枝，结合清园管理，在关键生育期轮换施用对症杀菌剂。",
+    "risk_rule": {
+      "count_thresholds": {"medium": 1, "high": 2, "critical": 4},
+      "confidence_thresholds": {"medium": 0.35, "high": 0.55, "critical": 0.75}
+    }
+  },
+  {
+    "class_id": -1,
+    "class_name": "corn_common_rust",
+    "category_type": "disease",
+    "crop": "玉米",
+    "harm_or_symptom": "叶片两面形成锈色突起孢子堆，影响光合作用和灌浆。",
+    "trigger_conditions": "温暖潮湿、种植密度大和通风差时容易暴发。",
+    "suggested_actions": "合理密植、加强肥水平衡，在发病初期喷施三唑类等对口药剂。",
+    "risk_rule": {
+      "count_thresholds": {"medium": 1, "high": 3, "critical": 5},
+      "confidence_thresholds": {"medium": 0.35, "high": 0.55, "critical": 0.75}
+    }
+  },
+  {
+    "class_id": -1,
+    "class_name": "corn_northern_leaf_blight",
+    "category_type": "disease",
+    "crop": "玉米",
+    "harm_or_symptom": "叶片出现长梭形灰褐色病斑，严重时大面积枯死。",
+    "trigger_conditions": "连阴雨、高湿和田间郁闭环境下扩展较快。",
+    "suggested_actions": "选用抗病品种、清除病残体，并在病斑扩展前实施保护性防治。",
+    "risk_rule": {
+      "count_thresholds": {"medium": 1, "high": 2, "critical": 4},
+      "confidence_thresholds": {"medium": 0.35, "high": 0.55, "critical": 0.75}
+    }
+  },
+  {
+    "class_id": -1,
+    "class_name": "grape_black_rot",
+    "category_type": "disease",
+    "crop": "葡萄",
+    "harm_or_symptom": "叶片出现圆形褐斑，果粒发黑干缩，降低商品价值。",
+    "trigger_conditions": "高湿多雨和病残体积累时病原菌容易反复侵染。",
+    "suggested_actions": "及时清园、疏穗疏叶、改善通风，并在花前花后做好药剂预防。",
+    "risk_rule": {
+      "count_thresholds": {"medium": 1, "high": 2, "critical": 4},
+      "confidence_thresholds": {"medium": 0.35, "high": 0.55, "critical": 0.75}
+    }
+  },
+  {
+    "class_id": -1,
+    "class_name": "potato_late_blight",
+    "category_type": "disease",
+    "crop": "马铃薯",
+    "harm_or_symptom": "叶片和茎秆快速出现水渍状病斑，严重时整株腐烂。",
+    "trigger_conditions": "连续阴雨、低温高湿和排水不良时传播极快。",
+    "suggested_actions": "加强排水与田间通风，发病初期立即用药并缩短监测间隔。",
+    "risk_rule": {
+      "count_thresholds": {"medium": 1, "high": 1, "critical": 3},
+      "confidence_thresholds": {"medium": 0.30, "high": 0.50, "critical": 0.70}
+    }
+  },
+  {
+    "class_id": -1,
+    "class_name": "tomato_early_blight",
+    "category_type": "disease",
+    "crop": "番茄",
+    "harm_or_symptom": "叶片出现同心轮纹病斑，病斑外围黄化，严重时下部叶片大量脱落。",
+    "trigger_conditions": "高温潮湿、连作和肥水失衡时风险升高。",
+    "suggested_actions": "及时摘除病叶，轮作并改善通风，在病害初发期实施药剂防治。",
+    "risk_rule": {
+      "count_thresholds": {"medium": 1, "high": 2, "critical": 4},
+      "confidence_thresholds": {"medium": 0.35, "high": 0.55, "critical": 0.75}
+    }
+  },
+  {
+    "class_id": -1,
+    "class_name": "tomato_late_blight",
+    "category_type": "disease",
+    "crop": "番茄",
+    "harm_or_symptom": "叶片、茎秆和果实可出现水渍状病斑，进展快、危害重。",
+    "trigger_conditions": "连续阴雨、棚室湿度大和通风不足时病害会迅速蔓延。",
+    "suggested_actions": "立即清除严重病株，控制棚内湿度，并使用对症杀菌剂及时防治。",
+    "risk_rule": {
+      "count_thresholds": {"medium": 1, "high": 1, "critical": 3},
+      "confidence_thresholds": {"medium": 0.30, "high": 0.50, "critical": 0.70}
+    }
+  }
+]

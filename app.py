@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import inspect
+import json
 import os
 from collections import defaultdict
+from datetime import datetime
 from pathlib import Path
 
 
@@ -22,16 +24,23 @@ except ImportError as exc:
     YOLO = None
     YOLO_IMPORT_ERROR = exc
 
+from diagnosis_service import build_structured_context, calculate_risk_level, generate_diagnosis, risk_label
+from knowledge_base import DISEASE, PEST, KnowledgeBase, load_default_class_names
+
 
 PROJECT_ROOT = Path(__file__).resolve().parent
 PROJECT_EN_NAME = "Mamba-YOLO IP102"
-PROJECT_CN_NAME = "农业害虫智能检测系统"
+PROJECT_CN_NAME = "农业害虫智能检测与诊断系统"
 DATASET_ROOT = PROJECT_ROOT / "datasets" / "pest102"
 DATASET_YAML = DATASET_ROOT / "pest102.yaml"
 DEFAULT_MODEL_PATH = PROJECT_ROOT / "output_dir" / "pest102" / "mambayolo_t_pest102" / "weights" / "best.pt"
-MODEL_SOURCE_LABEL = "Mamba-YOLO-T 训练权重"
-TASK_CHOICES = ["害虫检测"]
+RUNTIME_RECORD_DIR = PROJECT_ROOT / "runtime_records"
+RUNTIME_RECORD_FILE = RUNTIME_RECORD_DIR / "diagnosis_history.jsonl"
+MODEL_SOURCE_LABEL = "Mamba-YOLO-T IP102 训练权重"
+TASK_CATEGORY_MAP = {"害虫检测": PEST, "病害检测": DISEASE}
+CATEGORY_LABEL_MAP = {"全部": "全部", "害虫": PEST, "病害": DISEASE}
 MODEL_CACHE: dict[str, object] = {}
+KB_CACHE: dict[tuple[str, ...], KnowledgeBase] = {}
 
 APP_CSS = """
 :root {
@@ -112,7 +121,7 @@ body,
     font-size: 15px;
     line-height: 1.8;
     margin-top: 16px;
-    max-width: 760px;
+    max-width: 780px;
 }
 
 .hero-chip-row,
@@ -310,7 +319,6 @@ body,
 
 
 def filter_supported_kwargs(callable_obj, **kwargs):
-    """Keep only keyword arguments supported by the current Gradio version."""
     try:
         signature = inspect.signature(callable_obj)
     except (TypeError, ValueError):
@@ -353,9 +361,9 @@ def default_model_path() -> Path:
 
 
 def load_class_names() -> list[str]:
-    classes_file = DATASET_ROOT / "classes.txt"
-    if classes_file.exists():
-        return [line.strip() for line in classes_file.read_text(encoding="utf-8").splitlines() if line.strip()]
+    classes = load_default_class_names(DATASET_ROOT / "classes.txt")
+    if classes:
+        return classes
 
     if DATASET_YAML.exists():
         names: list[str] = []
@@ -372,8 +380,22 @@ def load_class_names() -> list[str]:
     return []
 
 
+def extract_model_names(model) -> list[str]:
+    names = getattr(model, "names", [])
+    if isinstance(names, dict):
+        return [names[idx] for idx in sorted(names)]
+    return list(names)
+
+
+def get_knowledge_base(runtime_class_names: list[str] | None = None) -> KnowledgeBase:
+    class_names = tuple(runtime_class_names or APP_STATE["runtime_class_names"])
+    if class_names not in KB_CACHE:
+        KB_CACHE[class_names] = KnowledgeBase(list(class_names))
+    return KB_CACHE[class_names]
+
+
 def class_count() -> int:
-    return len(load_class_names())
+    return len(APP_STATE["runtime_class_names"])
 
 
 def model_status() -> str:
@@ -393,122 +415,136 @@ def load_model(weight_path: str):
     return MODEL_CACHE[normalized]
 
 
-def extract_prediction_rows(result, model) -> list[dict]:
-    rows: list[dict] = []
-    boxes = result.boxes
-    names = result.names or getattr(model, "names", {})
+def initialize_app_state() -> dict:
+    runtime_class_names = load_class_names()
+    kb = KnowledgeBase(runtime_class_names)
+    return {
+        "runtime_class_names": runtime_class_names,
+        "knowledge_base": kb,
+    }
 
-    if boxes is None:
-        return rows
 
-    for box in boxes:
+APP_STATE = initialize_app_state()
+
+
+def get_runtime_category_count(category_type: str, kb: KnowledgeBase | None = None) -> int:
+    active_kb = kb or get_knowledge_base()
+    return sum(
+        1
+        for class_name in active_kb.runtime_class_names
+        if (active_kb.lookup(class_name=class_name) or {}).get("category_type", PEST) == category_type
+    )
+
+
+def extract_predictions(result, model, kb: KnowledgeBase) -> list[dict]:
+    predictions: list[dict] = []
+
+    if result.boxes is None:
+        return predictions
+
+    runtime_names = extract_model_names(model)
+    for box in result.boxes:
         class_id = int(box.cls[0].item())
-        if isinstance(names, dict):
-            class_name = names.get(class_id, str(class_id))
+        if 0 <= class_id < len(runtime_names):
+            class_name = runtime_names[class_id]
         else:
-            class_name = names[class_id] if class_id < len(names) else str(class_id)
-        confidence_value = float(box.conf[0].item())
+            class_name = str(class_id)
+
+        confidence = float(box.conf[0].item())
         x1, y1, x2, y2 = [round(float(value), 2) for value in box.xyxy[0].tolist()]
-        rows.append(
+        kb_entry = kb.lookup(class_name=class_name, class_id=class_id) or {}
+
+        predictions.append(
             {
                 "class_id": class_id,
                 "class_name": class_name,
-                "confidence": confidence_value,
+                "confidence": confidence,
                 "box": [x1, y1, x2, y2],
+                "category_type": kb_entry.get("category_type", PEST),
             }
         )
-    return rows
+
+    return predictions
 
 
-def format_class_stats(predictions: list[dict]) -> str:
-    if not predictions:
-        return "当前图片未检测到害虫目标。"
+def summarize_predictions(predictions: list[dict], kb: KnowledgeBase) -> list[dict]:
+    grouped: dict[str, dict] = {}
 
-    grouped: dict[str, dict] = defaultdict(lambda: {"count": 0, "max_confidence": 0.0, "class_id": ""})
-    for item in predictions:
-        current = grouped[item["class_name"]]
+    for prediction in predictions:
+        class_name = prediction["class_name"]
+        current = grouped.setdefault(
+            class_name,
+            {
+                "class_id": prediction["class_id"],
+                "class_name": class_name,
+                "category_type": prediction["category_type"],
+                "count": 0,
+                "max_confidence": 0.0,
+            },
+        )
         current["count"] += 1
-        current["class_id"] = item["class_id"]
-        current["max_confidence"] = max(current["max_confidence"], item["confidence"])
+        current["max_confidence"] = max(current["max_confidence"], prediction["confidence"])
 
-    lines = [
-        "| 类别 | Class ID | 数量 | 最大置信度 |",
-        "| --- | ---: | ---: | ---: |",
-    ]
+    summaries: list[dict] = []
     for class_name in sorted(grouped):
         item = grouped[class_name]
+        kb_entry = kb.lookup(class_name=class_name, class_id=item["class_id"]) or {}
+        level = calculate_risk_level(item["count"], item["max_confidence"], kb_entry.get("risk_rule"))
+        item["risk_level"] = level
+        item["diagnosis_tag"] = risk_label(level)
+        summaries.append(item)
+
+    return summaries
+
+
+def format_class_stats(class_stats: list[dict]) -> str:
+    if not class_stats:
+        return "当前模式下未检测到相关目标。"
+
+    lines = [
+        "| 类别 | 数量 | 最大置信度 | 诊断标签 |",
+        "| --- | ---: | ---: | --- |",
+    ]
+    for item in class_stats:
         lines.append(
-            f"| {class_name} | {item['class_id']} | {item['count']} | {item['max_confidence']:.2f} |"
+            f"| {item['class_name']} | {item['count']} | {item['max_confidence']:.2f} | {item['diagnosis_tag']} |"
         )
     return "\n".join(lines)
 
 
-def format_dataset_hits(predictions: list[dict]) -> str:
-    if not predictions:
-        return "当前结果未命中可展示类别。若图片清晰但没有结果，可适当降低置信度阈值后重试。"
-
-    class_names = []
-    for item in predictions:
-        if item["class_name"] not in class_names:
-            class_names.append(item["class_name"])
+def format_kb_hits(kb_hits: list[dict]) -> str:
+    if not kb_hits:
+        return "当前结果未命中知识库条目。"
 
     blocks = []
-    for class_name in class_names[:5]:
+    for entry in kb_hits:
         blocks.append(
             "\n".join(
                 [
-                    f"### {class_name}",
-                    "- 数据来源: IP102 农业害虫数据集",
-                    "- 模型链路: Mamba-YOLO-T 检测权重",
-                    "- 结果解释: 当前类别由模型根据目标区域特征与训练类别分布给出。",
-                    "- 使用建议: 结合田间实际虫体形态、作物受害部位和多张图片进行复核。",
+                    f"### {entry['class_name']}",
+                    f"- 类别类型: {entry['category_type']}",
+                    f"- 关联作物: {entry['crop']}",
+                    f"- 危害/症状: {entry['harm_or_symptom']}",
+                    f"- 发生条件: {entry['trigger_conditions']}",
+                    f"- 建议措施: {entry['suggested_actions']}",
                 ]
             )
         )
     return "\n\n".join(blocks)
 
 
-def format_diagnosis(predictions: list[dict], confidence_threshold: float, environment_note: str) -> str:
-    if not predictions:
-        return (
-            "诊断结论：当前图片未检出有效害虫目标。\n\n"
-            "风险等级：低风险或待复核\n\n"
-            "防治建议：建议重新上传光照充足、目标清晰的近景图片，必要时降低置信度阈值复查。\n\n"
-            "注意事项：检测结果仅作为辅助判断，应结合田间实际情况和人工观察。"
-        )
-
-    grouped: dict[str, dict] = defaultdict(lambda: {"count": 0, "max_confidence": 0.0})
-    for item in predictions:
-        current = grouped[item["class_name"]]
-        current["count"] += 1
-        current["max_confidence"] = max(current["max_confidence"], item["confidence"])
-
-    primary_name, primary_info = max(grouped.items(), key=lambda pair: (pair[1]["count"], pair[1]["max_confidence"]))
-    risk_level = "中风险" if primary_info["max_confidence"] >= max(confidence_threshold, 0.5) else "低风险"
-    env_text = environment_note.strip() or "未填写环境补充信息"
-    return (
-        f"诊断结论：模型检测到 {primary_info['count']} 个主要疑似害虫类别 {primary_name}，"
-        f"最高置信度为 {primary_info['max_confidence']:.2f}。\n\n"
-        f"风险等级：{risk_level}\n\n"
-        "防治建议：建议优先核对虫体形态和作物受害部位；若田间连续出现同类目标，"
-        "可结合当地植保方案开展监测、诱捕或精准防治。\n\n"
-        f"环境补充：{env_text}\n\n"
-        "注意事项：当前项目使用 IP102 分类数据生成的整图框伪检测标签完成流程跑通，"
-        "检测结果适合毕设演示和方法验证，正式应用仍建议使用真实框标注继续训练。"
-    )
+def save_runtime_record(record: dict) -> None:
+    RUNTIME_RECORD_DIR.mkdir(parents=True, exist_ok=True)
+    with RUNTIME_RECORD_FILE.open("a", encoding="utf-8") as handle:
+        handle.write(json.dumps(record, ensure_ascii=False) + "\n")
 
 
-def run_unified_inference(
-    input_image: str | None,
-    task_type: str,
-    confidence_threshold: float,
-    environment_note: str,
-):
+def run_unified_inference(input_image, task_type: str, confidence_threshold: float, environment_note: str):
     if not input_image:
         return "请先上传图片。", None, "", "", "", ""
 
-    if task_type != "害虫检测":
-        return "当前项目仅支持 IP102 害虫检测。", None, "", "", "", ""
+    if YOLO is None:
+        return f"模型依赖未就绪: {YOLO_IMPORT_ERROR}", None, "", "", "", ""
 
     weight_path = default_model_path()
     if not weight_path.exists():
@@ -516,37 +552,140 @@ def run_unified_inference(
 
     try:
         model = load_model(str(weight_path))
+        runtime_names = extract_model_names(model) or APP_STATE["runtime_class_names"]
+        kb = get_knowledge_base(runtime_names)
         results = model.predict(source=input_image, conf=confidence_threshold, save=False, verbose=False)
         result = results[0]
-        annotated = result.plot()
-        if annotated is not None and getattr(annotated, "ndim", 0) == 3:
-            annotated = annotated[:, :, ::-1]
+        annotated_image = result.plot()
+        if annotated_image is not None and getattr(annotated_image, "ndim", 0) == 3:
+            annotated_image = annotated_image[:, :, ::-1]
 
-        predictions = extract_prediction_rows(result, model)
+        raw_predictions = extract_predictions(result, model, kb)
+        expected_category = TASK_CATEGORY_MAP.get(task_type, PEST)
+        filtered_predictions = [
+            prediction for prediction in raw_predictions if prediction["category_type"] == expected_category
+        ]
+        class_stats = summarize_predictions(filtered_predictions, kb)
+        kb_hits = kb.lookup_many(item["class_name"] for item in class_stats)
+
+        structured_context = build_structured_context(
+            task_type,
+            class_stats,
+            kb_hits,
+            environment_note=environment_note,
+        )
+        diagnosis_source, _, diagnosis_text = generate_diagnosis(structured_context)
+
         summary_lines = [
             f"任务类型: {task_type}",
             f"模型权重: {weight_path.name}",
-            f"检测目标数: {len(predictions)}",
-            f"置信度阈值: {confidence_threshold:.2f}",
-            f"环境补充: {environment_note.strip() or '未填写'}",
+            f"原始检测目标数: {len(raw_predictions)}",
+            f"当前模式目标数: {len(filtered_predictions)}",
+            f"知识库命中数: {len(kb_hits)}",
+            f"诊断来源: {diagnosis_source}",
         ]
+
+        supported_count = get_runtime_category_count(expected_category, kb)
+        if supported_count == 0:
+            summary_lines.append("提示: 当前 Mamba-YOLO 权重没有该模式对应的可识别类别。")
+        elif not filtered_predictions:
+            summary_lines.append("提示: 当前图片中没有筛出该模式对应的目标，可更换图片或降低阈值复查。")
+
+        save_runtime_record(
+            {
+                "timestamp": datetime.now().isoformat(timespec="seconds"),
+                "task_type": task_type,
+                "confidence_threshold": confidence_threshold,
+                "raw_predictions": raw_predictions,
+                "filtered_predictions": filtered_predictions,
+                "class_stats": class_stats,
+                "kb_hits": kb_hits,
+                "diagnosis_source": diagnosis_source,
+                "diagnosis_text": diagnosis_text,
+                "environment_note": environment_note.strip(),
+            }
+        )
 
         return (
             "\n".join(summary_lines),
-            annotated,
-            format_class_stats(predictions),
-            format_dataset_hits(predictions),
-            "local_template",
-            format_diagnosis(predictions, confidence_threshold, environment_note),
+            annotated_image,
+            format_class_stats(class_stats),
+            format_kb_hits(kb_hits),
+            diagnosis_source,
+            diagnosis_text,
         )
     except Exception as exc:
         return f"推理失败: {exc}", None, "", "", "", ""
+
+
+def category_to_value(label: str) -> str:
+    return CATEGORY_LABEL_MAP.get(label, "全部")
+
+
+def format_database_rows(entries: list[dict]) -> list[list[str]]:
+    rows = []
+    for entry in entries:
+        rows.append(
+            [
+                entry.get("class_name", ""),
+                "害虫" if entry.get("category_type", PEST) == PEST else "病害",
+                entry.get("crop", ""),
+                entry.get("harm_or_symptom", ""),
+                entry.get("suggested_actions", ""),
+            ]
+        )
+    return rows
+
+
+def format_database_markdown(entries: list[dict], keyword: str, category_label: str) -> str:
+    if not entries:
+        return f"未找到匹配条目。关键词: `{keyword or '空'}`，类别: `{category_label}`。"
+
+    blocks = [
+        f"共找到 {len(entries)} 条匹配结果，下面展示前 {min(len(entries), 6)} 条详细说明。",
+    ]
+    for entry in entries[:6]:
+        blocks.append(
+            "\n".join(
+                [
+                    f"### {entry.get('class_name', '')}",
+                    f"- 类型: {'害虫' if entry.get('category_type', PEST) == PEST else '病害'}",
+                    f"- 作物: {entry.get('crop', '')}",
+                    f"- 危害/症状: {entry.get('harm_or_symptom', '')}",
+                    f"- 发生条件: {entry.get('trigger_conditions', '')}",
+                    f"- 建议措施: {entry.get('suggested_actions', '')}",
+                ]
+            )
+        )
+    return "\n\n".join(blocks)
+
+
+def search_knowledge_database(keyword: str, category_label: str):
+    kb = get_knowledge_base()
+    entries = kb.search(keyword=keyword or "", category_type=category_to_value(category_label), limit=30)
+    return format_database_markdown(entries, keyword or "", category_label), format_database_rows(entries)
+
+
+def build_database_overview_html() -> str:
+    kb = get_knowledge_base()
+    counts = kb.category_counts()
+    return "\n".join(
+        [
+            '<section class="quick-card-grid">',
+            f'<div class="quick-card"><div class="quick-card-title">知识库总条目</div><div class="quick-card-text">{len(kb.entries)} 条农业病虫害知识条目，包含运行时 IP102 害虫类别与病害种子条目。</div></div>',
+            f'<div class="quick-card"><div class="quick-card-title">害虫条目</div><div class="quick-card-text">{counts.get(PEST, 0)} 条。IP102 类别会自动补全危害、发生条件、防治建议和风险规则。</div></div>',
+            f'<div class="quick-card"><div class="quick-card-title">病害条目</div><div class="quick-card-text">{counts.get(DISEASE, 0)} 条。可用于知识检索和 AI 诊断上下文扩展。</div></div>',
+            "</section>",
+        ]
+    )
 
 
 def build_system_info_markdown() -> str:
     counts = dataset_split_counts()
     total_images = sum(images for images, _ in counts.values())
     total_labels = sum(labels for _, labels in counts.values())
+    kb = get_knowledge_base()
+    kb_counts = kb.category_counts()
 
     rows = [
         f"# {PROJECT_EN_NAME}",
@@ -558,9 +697,12 @@ def build_system_info_markdown() -> str:
         f"- 当前状态: {model_status()}",
         f"- 数据集配置: `{DATASET_YAML}`",
         f"- 数据集状态: {'已生成' if dataset_ready() else '未生成'}",
-        f"- 类别总数: {class_count()}",
+        f"- 当前数据集类别数: {class_count()}",
         f"- 图片总数: {total_images}",
         f"- 标签总数: {total_labels}",
+        f"- 农业知识库条目总数: {len(kb.entries)}",
+        f"- 知识库害虫条目: {kb_counts.get(PEST, 0)}",
+        f"- 知识库病害条目: {kb_counts.get(DISEASE, 0)}",
         "",
         "| Split | Images | Labels |",
         "| --- | ---: | ---: |",
@@ -572,19 +714,19 @@ def build_system_info_markdown() -> str:
     rows.extend(
         [
             "",
-            "## 使用说明",
-            "1. 上传一张害虫图片，任务类型保持 `害虫检测`。",
-            "2. 设置置信度阈值，阈值越低越容易检出，误检也可能增多。",
-            "3. 可填写田间环境补充信息，系统会把它写入本地模板诊断。",
-            "4. 前端默认调用 `output_dir/pest102/mambayolo_t_pest102/weights/best.pt`。",
-            "5. 可通过环境变量 `MBYOLO_APP_MODEL` 指定其它权重路径。",
+            "## AI 诊断环境变量",
+            "- `AGRI_LLM_API_KEY`: 大模型 API Key，不配置时自动使用本地模板诊断。",
+            "- `AGRI_LLM_API_URL`: OpenAI 兼容接口地址，默认 `https://api.openai.com/v1/chat/completions`。",
+            "- `AGRI_LLM_MODEL`: 诊断模型名称，默认 `gpt-4o-mini`。",
+            "- `AGRI_LLM_TIMEOUT`: 请求超时秒数，默认 `20`。",
+            "- `MBYOLO_APP_MODEL`: 可选，自定义前端推理权重路径。",
             "",
-            "## 常用命令",
-            "```bash",
-            "python3 scripts/prepare_ip102_dataset.py --zip archive.zip --overwrite",
-            "python3 mbyolo_train.py",
-            "python3 app.py",
-            "```",
+            "## 使用说明",
+            "1. 上传一张田间图片，选择 `害虫检测` 或 `病害检测`。",
+            "2. 当前 IP102 权重主要支持害虫类别；病害检测页保留为知识库与未来统一模型扩展入口。",
+            "3. 系统会先做模型推理，再按任务类型过滤结果并命中农业知识库。",
+            "4. 若配置了 AI API，会调用模型生成诊断；否则回退到本地模板。",
+            "5. 运行诊断记录会写入 `runtime_records/diagnosis_history.jsonl`。",
         ]
     )
     return "\n".join(rows)
@@ -594,17 +736,20 @@ def build_hero_html() -> str:
     counts = dataset_split_counts()
     total_images = sum(images for images, _ in counts.values())
     total_labels = sum(labels for _, labels in counts.values())
+    kb = get_knowledge_base()
+    kb_counts = kb.category_counts()
     return "\n".join(
         [
             '<section class="hero-banner">',
-            '<div class="hero-kicker">Mamba Vision Terminal · IP102 Pest Detection</div>',
+            '<div class="hero-kicker">Mamba Vision Terminal · IP102 Pest Detection · Knowledge Diagnosis</div>',
             f'<h1 class="hero-title">{PROJECT_EN_NAME}</h1>',
-            f'<div class="hero-subtitle">{PROJECT_CN_NAME}面向农业害虫图像识别场景，基于 Mamba-YOLO 完成目标检测、结果统计与本地模板诊断展示。界面风格与 pest-disease-vision 保持一致，适合本地演示与毕设答辩。</div>',
+            f'<div class="hero-subtitle">{PROJECT_CN_NAME}基于 Mamba-YOLO-T 与 IP102 数据集构建，集成目标检测、农业知识库检索、AI 智能诊断与本地模板兜底，形成适合毕设演示的完整病虫害视觉诊断链路。</div>',
             '<div class="hero-chip-row">',
             f'<div class="hero-chip"><div class="hero-chip-label">当前模型状态</div><div class="hero-chip-value">{model_status()}</div></div>',
             f'<div class="hero-chip"><div class="hero-chip-label">前端当前调用</div><div class="hero-chip-value">{MODEL_SOURCE_LABEL}</div></div>',
-            f'<div class="hero-chip"><div class="hero-chip-label">权重类别总数</div><div class="hero-chip-value">{class_count()}</div></div>',
+            f'<div class="hero-chip"><div class="hero-chip-label">IP102 类别数</div><div class="hero-chip-value">{class_count()}</div></div>',
             f'<div class="hero-chip"><div class="hero-chip-label">图片 / 标签数量</div><div class="hero-chip-value">{total_images} / {total_labels}</div></div>',
+            f'<div class="hero-chip"><div class="hero-chip-label">知识库害虫 / 病害</div><div class="hero-chip-value">{kb_counts.get(PEST, 0)} / {kb_counts.get(DISEASE, 0)}</div></div>',
             "</div>",
             "</section>",
         ]
@@ -615,9 +760,9 @@ def build_overview_cards_html() -> str:
     return "\n".join(
         [
             '<section class="quick-card-grid">',
-            '<div class="quick-card"><div class="quick-card-title">统一识别入口</div><div class="quick-card-text">同一页面完成图片上传、阈值设置、Mamba-YOLO 推理与结果回传，保持与原病虫害视觉系统一致的交互链路。</div></div>',
-            '<div class="quick-card"><div class="quick-card-title">检测结果统计</div><div class="quick-card-text">输出框选图、类别数量、最大置信度和类别说明，方便观察模型对害虫目标的识别情况。</div></div>',
-            '<div class="quick-card"><div class="quick-card-title">答辩演示友好</div><div class="quick-card-text">权重不存在或推理失败时页面仍可打开；训练好 best.pt 后即可直接进行本地或服务器演示。</div></div>',
+            '<div class="quick-card"><div class="quick-card-title">统一识别入口</div><div class="quick-card-text">上传田间图片后统一调用 Mamba-YOLO 权重，并按任务类型过滤害虫或病害结果。</div></div>',
+            '<div class="quick-card"><div class="quick-card-title">农业知识库增强</div><div class="quick-card-text">检测结果会命中本地农业数据库，展示关联作物、危害症状、发生条件和防治建议。</div></div>',
+            '<div class="quick-card"><div class="quick-card-title">AI / 本地双路诊断</div><div class="quick-card-text">配置 API Key 时调用大模型生成诊断；不可用时自动回退到本地模板，保证答辩演示稳定。</div></div>',
             "</section>",
         ]
     )
@@ -656,7 +801,7 @@ def create_interface():
                             height=360,
                         )
                         task_selector = gr.Dropdown(
-                            choices=TASK_CHOICES,
+                            choices=list(TASK_CATEGORY_MAP.keys()),
                             value="害虫检测",
                             label="任务类型",
                         )
@@ -683,18 +828,18 @@ def create_interface():
 
                 with gr.Row(equal_height=True):
                     with gr.Column(elem_classes=["panel-card", "compact-card"]):
-                        gr.HTML('<div class="panel-heading">数量统计与类别概率</div>')
-                        gr.HTML('<div class="panel-note">按类别输出目标数量和最大置信度，便于观察识别结果。</div>')
+                        gr.HTML('<div class="panel-heading">数量统计与风险标签</div>')
+                        gr.HTML('<div class="panel-note">按类别输出目标数量、最大置信度和知识库规则计算出的诊断标签。</div>')
                         class_stats_output = gr.Markdown()
                     with gr.Column(elem_classes=["panel-card", "compact-card"]):
-                        gr.HTML('<div class="panel-heading">类别与数据说明</div>')
-                        gr.HTML('<div class="panel-note">展示当前识别类别对应的数据集来源、模型链路和使用建议。</div>')
+                        gr.HTML('<div class="panel-heading">知识库命中</div>')
+                        gr.HTML('<div class="panel-note">展示当前识别结果命中的农业知识条目，作为 AI 诊断上下文。</div>')
                         kb_hits_output = gr.Markdown()
 
                 with gr.Column(elem_classes=["panel-card", "diagnosis-card"]):
                     gr.HTML('<div class="section-caption">Diagnosis Layer</div>')
-                    gr.HTML('<div class="panel-heading">本地模板诊断输出</div>')
-                    gr.HTML('<div class="panel-note">根据检测统计和环境补充信息生成演示用诊断文本，便于答辩展示完整链路。</div>')
+                    gr.HTML('<div class="panel-heading">AI 智能诊断输出</div>')
+                    gr.HTML('<div class="panel-note">优先调用大模型 API 生成诊断，若接口不可用则自动回退到本地模板诊断。</div>')
                     diagnosis_output = gr.Markdown()
 
                 click_kwargs = filter_supported_kwargs(
@@ -714,9 +859,44 @@ def create_interface():
                 )
                 submit_btn.click(**click_kwargs)
 
+            with gr.Tab("农业知识库"):
+                gr.HTML('<div class="section-caption">Agricultural Database</div>')
+                gr.HTML('<h2 class="section-title">农业病虫害知识库检索</h2>')
+                gr.HTML(build_database_overview_html())
+                with gr.Row(equal_height=True):
+                    with gr.Column(scale=1, elem_classes=["panel-card"]):
+                        gr.HTML('<div class="panel-heading">检索条件</div>')
+                        gr.HTML('<div class="panel-note">可按类别名称、作物、危害症状或防治建议检索本地农业数据库。</div>')
+                        keyword_input = gr.Textbox(label="关键词", placeholder="例如 rice、tomato、螟、晚疫病")
+                        category_input = gr.Dropdown(
+                            choices=list(CATEGORY_LABEL_MAP.keys()),
+                            value="全部",
+                            label="类别类型",
+                        )
+                        search_btn = gr.Button("检索知识库", variant="primary", elem_classes=["primary-btn"])
+                    with gr.Column(scale=2, elem_classes=["panel-card"]):
+                        gr.HTML('<div class="panel-heading">检索结果</div>')
+                        database_markdown = gr.Markdown()
+                with gr.Column(elem_classes=["panel-card"]):
+                    gr.HTML('<div class="panel-heading">结果表格</div>')
+                    database_table = gr.Dataframe(
+                        headers=["类别", "类型", "作物", "危害/症状", "建议措施"],
+                        datatype=["str", "str", "str", "str", "str"],
+                        interactive=False,
+                    )
+                search_kwargs = filter_supported_kwargs(
+                    search_btn.click,
+                    fn=search_knowledge_database,
+                    inputs=[keyword_input, category_input],
+                    outputs=[database_markdown, database_table],
+                    api_name=False,
+                    show_api=False,
+                )
+                search_btn.click(**search_kwargs)
+
             with gr.Tab("系统信息"):
                 gr.HTML('<div class="section-caption">System Overview</div>')
-                gr.HTML('<h2 class="section-title">模型与数据集状态</h2>')
+                gr.HTML('<h2 class="section-title">模型、数据集与诊断链路状态</h2>')
                 with gr.Column(elem_classes=["panel-card"]):
                     gr.Markdown(build_system_info_markdown())
 

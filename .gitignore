@@ -6,6 +6,7 @@ __pycache__/
 .idea
 output_dir/
 runs/
+runtime_records/*.jsonl
 datasets/
 archive/
 archive.zip
