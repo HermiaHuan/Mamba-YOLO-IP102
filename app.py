@@ -64,8 +64,11 @@ APP_CSS = """
     --agri-shadow: 0 18px 45px rgba(32, 54, 39, 0.14);
 }
 
+html,
 body,
-.gradio-container {
+#root,
+.gradio-container,
+.gradio-container > div {
     background:
         radial-gradient(circle at top left, rgba(138, 163, 74, 0.10), transparent 30%),
         radial-gradient(circle at top right, rgba(36, 91, 59, 0.10), transparent 26%),
@@ -75,19 +78,24 @@ body,
 }
 
 .gradio-container {
-    max-width: 1220px !important;
+    max-width: none !important;
+    min-height: 100vh !important;
+    width: 100% !important;
 }
 
 #app-shell {
-    padding-top: 18px;
-    padding-bottom: 28px;
+    box-sizing: border-box;
+    margin: 0 auto;
+    max-width: 1560px;
+    padding: 18px 28px 28px;
+    width: 100%;
 }
 
 .hero-banner {
     background:
-        radial-gradient(circle at 96% 12%, rgba(95, 154, 112, 0.22), transparent 26%),
-        linear-gradient(135deg, #edf7ec 0%, #dfeedd 54%, #cfe5d0 100%);
-    border: 1px solid rgba(36, 91, 59, 0.22);
+        radial-gradient(circle at 96% 12%, rgba(70, 132, 86, 0.24), transparent 26%),
+        linear-gradient(135deg, #deefde 0%, #cbe4cc 54%, #b8d7bb 100%);
+    border: 1px solid rgba(36, 91, 59, 0.26);
     border-radius: 28px;
     box-shadow: var(--agri-shadow);
     color: var(--agri-ink);
@@ -265,6 +273,13 @@ body,
     color: var(--agri-ink) !important;
 }
 
+.gradio-container .tab-nav,
+.gradio-container .tabitem,
+.gradio-container [role="tablist"] {
+    background: #ffffff !important;
+    border-bottom: 1px solid rgba(36, 91, 59, 0.22) !important;
+}
+
 .gradio-container .tab-nav button {
     border-radius: 999px !important;
     background: #ffffff !important;
@@ -277,6 +292,22 @@ body,
 .gradio-container .tab-nav button.selected {
     background: #dfeee1 !important;
     color: #14351f !important;
+}
+
+.gradio-container .tab-nav button *,
+.gradio-container [role="tab"],
+.gradio-container [role="tab"] *,
+.gradio-container button[role="tab"],
+.gradio-container button[role="tab"] * {
+    color: var(--agri-ink) !important;
+    opacity: 1 !important;
+}
+
+.gradio-container .tab-nav button.selected *,
+.gradio-container [role="tab"][aria-selected="true"],
+.gradio-container [role="tab"][aria-selected="true"] * {
+    color: var(--agri-leaf) !important;
+    opacity: 1 !important;
 }
 
 .gradio-container table {
@@ -311,8 +342,23 @@ body,
 .gradio-container table tbody tr,
 .gradio-container table tbody td,
 .gradio-container .dataframe,
-.gradio-container .dataframe * {
+.gradio-container .dataframe *,
+.gradio-container .table-wrap,
+.gradio-container .table-wrap *,
+.gradio-container .cell-wrap,
+.gradio-container .cell-wrap *,
+.gradio-container [data-testid="dataframe"],
+.gradio-container [data-testid="dataframe"] *,
+.gradio-container .wrap[data-testid],
+.gradio-container .wrap[data-testid] * {
     background-color: #ffffff !important;
+    color: var(--agri-ink) !important;
+}
+
+.gradio-container .dataframe thead *,
+.gradio-container [data-testid="dataframe"] thead *,
+.gradio-container .table-wrap thead * {
+    background-color: #f0f8ef !important;
     color: var(--agri-ink) !important;
 }
 
