@@ -51,23 +51,25 @@ KB_CACHE: dict[tuple[str, ...], KnowledgeBase] = {}
 
 APP_CSS = """
 :root {
-    --agri-ink: #20342a;
-    --agri-muted: #5d6e61;
-    --agri-leaf: #2f6b47;
+    --agri-ink: #102218;
+    --agri-muted: #3f5145;
+    --agri-leaf: #245b3b;
     --agri-moss: #8aa34a;
-    --agri-earth: #8a5b3d;
-    --agri-cream: #f7f4ea;
-    --agri-panel: rgba(255, 255, 255, 0.86);
-    --agri-line: rgba(47, 107, 71, 0.14);
-    --agri-shadow: 0 18px 45px rgba(48, 72, 53, 0.12);
+    --agri-earth: #6f452d;
+    --agri-cream: #fbfaf4;
+    --agri-panel: #ffffff;
+    --agri-soft: #f4faf3;
+    --agri-field: #eef7ed;
+    --agri-line: rgba(36, 91, 59, 0.24);
+    --agri-shadow: 0 18px 45px rgba(32, 54, 39, 0.14);
 }
 
 body,
 .gradio-container {
     background:
-        radial-gradient(circle at top left, rgba(138, 163, 74, 0.16), transparent 30%),
-        radial-gradient(circle at top right, rgba(47, 107, 71, 0.12), transparent 26%),
-        linear-gradient(180deg, #f4efdf 0%, #edf5eb 48%, #f8f6ef 100%);
+        radial-gradient(circle at top left, rgba(138, 163, 74, 0.10), transparent 30%),
+        radial-gradient(circle at top right, rgba(36, 91, 59, 0.10), transparent 26%),
+        linear-gradient(180deg, #fbfaf3 0%, #f4faf3 48%, #fcfbf6 100%);
     color: var(--agri-ink);
     font-family: "Avenir Next", "SF Pro Display", "PingFang SC", "Microsoft YaHei", sans-serif;
 }
@@ -83,12 +85,12 @@ body,
 
 .hero-banner {
     background:
-        linear-gradient(135deg, rgba(32, 52, 42, 0.96), rgba(47, 107, 71, 0.92)),
-        linear-gradient(180deg, rgba(138, 163, 74, 0.15), rgba(255, 255, 255, 0));
-    border: 1px solid rgba(255, 255, 255, 0.12);
+        radial-gradient(circle at 96% 12%, rgba(95, 154, 112, 0.22), transparent 26%),
+        linear-gradient(135deg, #edf7ec 0%, #dfeedd 54%, #cfe5d0 100%);
+    border: 1px solid rgba(36, 91, 59, 0.22);
     border-radius: 28px;
     box-shadow: var(--agri-shadow);
-    color: #f7f6f0;
+    color: var(--agri-ink);
     overflow: hidden;
     padding: 30px 34px;
     position: relative;
@@ -96,7 +98,7 @@ body,
 
 .hero-banner::after {
     background:
-        radial-gradient(circle, rgba(255, 255, 255, 0.22), transparent 58%);
+        radial-gradient(circle, rgba(95, 154, 112, 0.14), transparent 58%);
     content: "";
     height: 240px;
     position: absolute;
@@ -106,7 +108,7 @@ body,
 }
 
 .hero-kicker {
-    color: #cddfb7;
+    color: var(--agri-leaf);
     font-size: 13px;
     font-weight: 700;
     letter-spacing: 0.18em;
@@ -124,7 +126,7 @@ body,
 }
 
 .hero-subtitle {
-    color: rgba(247, 246, 240, 0.84);
+    color: var(--agri-muted);
     font-size: 15px;
     line-height: 1.8;
     margin-top: 16px;
@@ -144,20 +146,20 @@ body,
 
 .hero-chip {
     backdrop-filter: blur(6px);
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.82);
+    border: 1px solid rgba(36, 91, 59, 0.20);
     border-radius: 18px;
     padding: 14px 16px;
 }
 
 .hero-chip-label {
-    color: rgba(247, 246, 240, 0.74);
+    color: var(--agri-muted);
     font-size: 12px;
     margin-bottom: 6px;
 }
 
 .hero-chip-value {
-    color: #ffffff;
+    color: var(--agri-ink);
     font-size: 18px;
     font-weight: 700;
 }
@@ -252,28 +254,35 @@ body,
 .gradio-container .gr-dropdown,
 .gradio-container .gr-image,
 .gradio-container .gradio-tabitem {
+    background: var(--agri-panel) !important;
+    border-color: var(--agri-line) !important;
     border-radius: 18px !important;
+    color: var(--agri-ink) !important;
 }
 
 .gradio-container .tabs {
     border: none !important;
+    color: var(--agri-ink) !important;
 }
 
 .gradio-container .tab-nav button {
     border-radius: 999px !important;
-    color: var(--agri-muted) !important;
+    background: #ffffff !important;
+    border: 1px solid var(--agri-line) !important;
+    color: var(--agri-ink) !important;
     font-weight: 700 !important;
     margin-right: 8px;
 }
 
 .gradio-container .tab-nav button.selected {
-    background: rgba(47, 107, 71, 0.12) !important;
-    color: var(--agri-leaf) !important;
+    background: #dfeee1 !important;
+    color: #14351f !important;
 }
 
 .gradio-container table {
     border-collapse: separate;
     border-spacing: 0;
+    background: #ffffff !important;
     color: var(--agri-ink) !important;
     font-size: 14px;
     overflow: hidden;
@@ -281,14 +290,30 @@ body,
 }
 
 .gradio-container table thead tr {
-    background: rgba(47, 107, 71, 0.08);
+    background: #f0f8ef !important;
 }
 
 .gradio-container table th,
 .gradio-container table td {
-    border-bottom: 1px solid rgba(47, 107, 71, 0.08);
+    background: #ffffff !important;
+    border-bottom: 1px solid rgba(36, 91, 59, 0.16);
     color: var(--agri-ink) !important;
     padding: 10px 12px !important;
+}
+
+.gradio-container table th,
+.gradio-container table thead th {
+    background: #f0f8ef !important;
+}
+
+.gradio-container table tr,
+.gradio-container table tbody,
+.gradio-container table tbody tr,
+.gradio-container table tbody td,
+.gradio-container .dataframe,
+.gradio-container .dataframe * {
+    background-color: #ffffff !important;
+    color: var(--agri-ink) !important;
 }
 
 .gradio-container h3 {
@@ -298,19 +323,69 @@ body,
 .gradio-container label,
 .gradio-container textarea,
 .gradio-container input,
+.gradio-container select,
+.gradio-container option,
 .gradio-container .prose,
 .gradio-container .markdown,
-.gradio-container .gr-form {
+.gradio-container .gr-form,
+.gradio-container .gradio-container,
+.gradio-container .wrap,
+.gradio-container .block,
+.gradio-container .output-class,
+.gradio-container .input-class {
     color: var(--agri-ink) !important;
+}
+
+.gradio-container textarea,
+.gradio-container input,
+.gradio-container select,
+.gradio-container .wrap,
+.gradio-container .block {
+    background: #ffffff !important;
+}
+
+.gradio-container pre,
+.gradio-container code,
+.gradio-container .prose pre,
+.gradio-container .prose code,
+.gradio-container .markdown pre,
+.gradio-container .markdown code {
+    background: #f5fbf4 !important;
+    color: var(--agri-ink) !important;
+    border: 1px solid rgba(36, 91, 59, 0.14) !important;
+}
+
+.gradio-container .prose table,
+.gradio-container .markdown table,
+.gradio-container .prose table *,
+.gradio-container .markdown table * {
+    background-color: #ffffff !important;
+    color: var(--agri-ink) !important;
+}
+
+.gradio-container .markdown,
+.gradio-container .markdown *,
+.gradio-container .prose,
+.gradio-container .prose *,
+.gradio-container p,
+.gradio-container span,
+.gradio-container li {
+    color: var(--agri-ink) !important;
+}
+
+.gradio-container .secondary,
+.gradio-container .meta-text,
+.gradio-container .svelte-1gfkn6j {
+    color: var(--agri-muted) !important;
 }
 
 .gradio-container textarea::placeholder,
 .gradio-container input::placeholder {
-    color: var(--agri-muted) !important;
+    color: #6b7a70 !important;
 }
 
 .diagnosis-card {
-    background: linear-gradient(180deg, rgba(247, 244, 234, 0.9), rgba(255, 255, 255, 0.95));
+    background: linear-gradient(180deg, #ffffff, #f7fbf6) !important;
 }
 
 @media (max-width: 900px) {
@@ -329,6 +404,8 @@ def filter_supported_kwargs(callable_obj, **kwargs):
     try:
         signature = inspect.signature(callable_obj)
     except (TypeError, ValueError):
+        return kwargs
+    if any(parameter.kind == inspect.Parameter.VAR_KEYWORD for parameter in signature.parameters.values()):
         return kwargs
     return {key: value for key, value in kwargs.items() if key in signature.parameters}
 
@@ -432,6 +509,18 @@ def initialize_app_state() -> dict:
 
 
 APP_STATE = initialize_app_state()
+
+
+def configure_local_proxy_bypass() -> None:
+    """Prevent proxies from intercepting Gradio's localhost health checks."""
+    local_hosts = ["127.0.0.1", "localhost", "::1"]
+    for key in ("NO_PROXY", "no_proxy"):
+        current = os.environ.get(key, "")
+        parts = [part.strip() for part in current.split(",") if part.strip()]
+        for host in local_hosts:
+            if host not in parts:
+                parts.append(host)
+        os.environ[key] = ",".join(parts)
 
 
 def get_runtime_category_count(category_type: str, kb: KnowledgeBase | None = None) -> int:
@@ -808,6 +897,7 @@ def create_interface():
     )
 
     with gr.Blocks(**block_kwargs) as demo:
+        gr.HTML(f"<style>{APP_CSS}</style>")
         with gr.Column(elem_id="app-shell"):
             gr.HTML(build_hero_html())
             gr.HTML(build_overview_cards_html())
@@ -943,6 +1033,7 @@ def create_interface():
 
 
 if __name__ == "__main__":
+    configure_local_proxy_bypass()
     demo = create_interface()
     print(f"启动 {PROJECT_EN_NAME} - {PROJECT_CN_NAME} 界面...")
     print("Gradio 会自动选择可用本地端口，终端会显示实际访问地址。")
