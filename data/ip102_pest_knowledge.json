@@ -1,0 +1,2255 @@
+{
+  "metadata": {
+    "name": "IP102 pest knowledge base",
+    "description": "覆盖 IP102 102 类害虫的基础知识库，用于 Mamba-YOLO 前端检索、规则诊断和 AI 诊断上下文。",
+    "class_count": 102,
+    "source_class_file": "datasets/pest102/classes.txt",
+    "note": "条目为面向系统演示和辅助诊断的基础农业知识，实际防控应结合当地植保部门建议。"
+  },
+  "entries": [
+    {
+      "class_id": 0,
+      "class_name": "rice leaf roller",
+      "category_type": "pest",
+      "crop": "水稻",
+      "pest_group": "鳞翅目食叶害虫",
+      "harm_or_symptom": "rice leaf roller 属于鳞翅目食叶害虫。幼虫啃食叶片、嫩梢、花蕾或果面，可形成孔洞、缺刻和卷叶，大发生时造成明显减产。",
+      "trigger_conditions": "温暖季节、成虫迁飞或产卵高峰后，低龄幼虫集中取食期危害增长快。",
+      "suggested_actions": "利用性诱剂、灯诱和田间巡查掌握发生期，在低龄幼虫集中取食阶段采用生物制剂或对口药剂防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 1,
+      "class_name": "rice leaf caterpillar",
+      "category_type": "pest",
+      "crop": "水稻",
+      "pest_group": "鳞翅目食叶害虫",
+      "harm_or_symptom": "rice leaf caterpillar 属于鳞翅目食叶害虫。幼虫啃食叶片、嫩梢、花蕾或果面，可形成孔洞、缺刻和卷叶，大发生时造成明显减产。",
+      "trigger_conditions": "温暖季节、成虫迁飞或产卵高峰后，低龄幼虫集中取食期危害增长快。",
+      "suggested_actions": "利用性诱剂、灯诱和田间巡查掌握发生期，在低龄幼虫集中取食阶段采用生物制剂或对口药剂防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 2,
+      "class_name": "paddy stem maggot",
+      "category_type": "pest",
+      "crop": "水稻",
+      "pest_group": "蛀食性害虫",
+      "harm_or_symptom": "paddy stem maggot 属于蛀食性害虫。幼虫常钻蛀茎秆、枝条、果实或叶鞘，破坏输导组织，造成枯心、折秆、落果或枝梢衰弱。",
+      "trigger_conditions": "温暖湿润、田间残株和越冬虫源较多、成虫产卵期监测不足时易加重。",
+      "suggested_actions": "清除受害残体和越冬虫源，结合性诱、灯诱或糖醋液监测，在卵孵化高峰和低龄幼虫期进行针对性防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 2,
+          "critical": 5
+        },
+        "confidence_thresholds": {
+          "medium": 0.32,
+          "high": 0.58,
+          "critical": 0.8
+        }
+      }
+    },
+    {
+      "class_id": 3,
+      "class_name": "asiatic rice borer",
+      "category_type": "pest",
+      "crop": "水稻",
+      "pest_group": "蛀食性害虫",
+      "harm_or_symptom": "asiatic rice borer 属于蛀食性害虫。幼虫常钻蛀茎秆、枝条、果实或叶鞘，破坏输导组织，造成枯心、折秆、落果或枝梢衰弱。",
+      "trigger_conditions": "温暖湿润、田间残株和越冬虫源较多、成虫产卵期监测不足时易加重。",
+      "suggested_actions": "清除受害残体和越冬虫源，结合性诱、灯诱或糖醋液监测，在卵孵化高峰和低龄幼虫期进行针对性防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 2,
+          "critical": 5
+        },
+        "confidence_thresholds": {
+          "medium": 0.32,
+          "high": 0.58,
+          "critical": 0.8
+        }
+      }
+    },
+    {
+      "class_id": 4,
+      "class_name": "yellow rice borer",
+      "category_type": "pest",
+      "crop": "水稻",
+      "pest_group": "蛀食性害虫",
+      "harm_or_symptom": "yellow rice borer 属于蛀食性害虫。幼虫常钻蛀茎秆、枝条、果实或叶鞘，破坏输导组织，造成枯心、折秆、落果或枝梢衰弱。",
+      "trigger_conditions": "温暖湿润、田间残株和越冬虫源较多、成虫产卵期监测不足时易加重。",
+      "suggested_actions": "清除受害残体和越冬虫源，结合性诱、灯诱或糖醋液监测，在卵孵化高峰和低龄幼虫期进行针对性防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 2,
+          "critical": 5
+        },
+        "confidence_thresholds": {
+          "medium": 0.32,
+          "high": 0.58,
+          "critical": 0.8
+        }
+      }
+    },
+    {
+      "class_id": 5,
+      "class_name": "rice gall midge",
+      "category_type": "pest",
+      "crop": "水稻",
+      "pest_group": "蝇蚊类害虫",
+      "harm_or_symptom": "rice gall midge 属于蝇蚊类害虫。幼虫多潜食叶片、穗部、果实或组织内部，造成虫道、腐烂、畸形和落果，部分种类检疫风险较高。",
+      "trigger_conditions": "高湿、果实成熟期、田间烂果或病残体清理不及时会提高虫源基数。",
+      "suggested_actions": "及时清理受害果和残体，配合诱剂诱杀、套袋、检疫处理和低龄期药剂防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 2,
+          "critical": 5
+        },
+        "confidence_thresholds": {
+          "medium": 0.32,
+          "high": 0.58,
+          "critical": 0.8
+        }
+      }
+    },
+    {
+      "class_id": 6,
+      "class_name": "Rice Stemfly",
+      "category_type": "pest",
+      "crop": "水稻",
+      "pest_group": "蛀食性害虫",
+      "harm_or_symptom": "Rice Stemfly 属于蛀食性害虫。幼虫常钻蛀茎秆、枝条、果实或叶鞘，破坏输导组织，造成枯心、折秆、落果或枝梢衰弱。",
+      "trigger_conditions": "温暖湿润、田间残株和越冬虫源较多、成虫产卵期监测不足时易加重。",
+      "suggested_actions": "清除受害残体和越冬虫源，结合性诱、灯诱或糖醋液监测，在卵孵化高峰和低龄幼虫期进行针对性防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 2,
+          "critical": 5
+        },
+        "confidence_thresholds": {
+          "medium": 0.32,
+          "high": 0.58,
+          "critical": 0.8
+        }
+      }
+    },
+    {
+      "class_id": 7,
+      "class_name": "brown plant hopper",
+      "category_type": "pest",
+      "crop": "水稻",
+      "pest_group": "刺吸式害虫",
+      "harm_or_symptom": "brown plant hopper 属于刺吸式害虫。成虫或若虫吸食叶片、嫩梢和穗部汁液，易导致叶片失绿、卷曲、煤污病或病毒病传播风险上升。",
+      "trigger_conditions": "高温少雨、氮肥偏多、嫩梢旺长和天敌数量不足时容易快速繁殖。",
+      "suggested_actions": "保护天敌，减少氮肥偏施；发生初期可用黄板、诱集和选择性药剂控制，重点喷施叶背和嫩梢部位。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 3,
+          "critical": 8
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 8,
+      "class_name": "white backed plant hopper",
+      "category_type": "pest",
+      "crop": "水稻",
+      "pest_group": "刺吸式害虫",
+      "harm_or_symptom": "white backed plant hopper 属于刺吸式害虫。成虫或若虫吸食叶片、嫩梢和穗部汁液，易导致叶片失绿、卷曲、煤污病或病毒病传播风险上升。",
+      "trigger_conditions": "高温少雨、氮肥偏多、嫩梢旺长和天敌数量不足时容易快速繁殖。",
+      "suggested_actions": "保护天敌，减少氮肥偏施；发生初期可用黄板、诱集和选择性药剂控制，重点喷施叶背和嫩梢部位。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 3,
+          "critical": 8
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 9,
+      "class_name": "small brown plant hopper",
+      "category_type": "pest",
+      "crop": "水稻",
+      "pest_group": "刺吸式害虫",
+      "harm_or_symptom": "small brown plant hopper 属于刺吸式害虫。成虫或若虫吸食叶片、嫩梢和穗部汁液，易导致叶片失绿、卷曲、煤污病或病毒病传播风险上升。",
+      "trigger_conditions": "高温少雨、氮肥偏多、嫩梢旺长和天敌数量不足时容易快速繁殖。",
+      "suggested_actions": "保护天敌，减少氮肥偏施；发生初期可用黄板、诱集和选择性药剂控制，重点喷施叶背和嫩梢部位。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 3,
+          "critical": 8
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 10,
+      "class_name": "rice water weevil",
+      "category_type": "pest",
+      "crop": "水稻",
+      "pest_group": "象甲类害虫",
+      "harm_or_symptom": "rice water weevil 属于象甲类害虫。成虫取食叶片、嫩梢或果实，幼虫可蛀食种子、果核、根部或茎部，造成缺刻、落果和商品性下降。",
+      "trigger_conditions": "成虫羽化期、果实膨大期、土壤和落果中越冬虫源较多时危害明显。",
+      "suggested_actions": "结合人工摘除虫果、清园翻土和诱捕监测，在成虫出土或产卵前后开展综合防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 2,
+          "critical": 5
+        },
+        "confidence_thresholds": {
+          "medium": 0.32,
+          "high": 0.58,
+          "critical": 0.8
+        }
+      }
+    },
+    {
+      "class_id": 11,
+      "class_name": "rice leafhopper",
+      "category_type": "pest",
+      "crop": "水稻",
+      "pest_group": "刺吸式害虫",
+      "harm_or_symptom": "rice leafhopper 属于刺吸式害虫。成虫或若虫吸食叶片、嫩梢和穗部汁液，易导致叶片失绿、卷曲、煤污病或病毒病传播风险上升。",
+      "trigger_conditions": "高温少雨、氮肥偏多、嫩梢旺长和天敌数量不足时容易快速繁殖。",
+      "suggested_actions": "保护天敌，减少氮肥偏施；发生初期可用黄板、诱集和选择性药剂控制，重点喷施叶背和嫩梢部位。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 3,
+          "critical": 8
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 12,
+      "class_name": "grain spreader thrips",
+      "category_type": "pest",
+      "crop": "水稻",
+      "pest_group": "蓟马类害虫",
+      "harm_or_symptom": "grain spreader thrips 属于蓟马类害虫。常锉吸嫩叶、花器和幼果组织，形成银白色斑痕、畸形或落花落果，干旱少雨时风险较高。",
+      "trigger_conditions": "干旱少雨、花期或嫩梢期持续较长、周边杂草寄主较多时风险上升。",
+      "suggested_actions": "使用蓝板监测和诱杀，清除田间杂草，在花期或嫩梢期选择低残留药剂并注意轮换作用机制。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 3,
+          "critical": 8
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 13,
+      "class_name": "rice shell pest",
+      "category_type": "pest",
+      "crop": "水稻",
+      "pest_group": "常见农业害虫",
+      "harm_or_symptom": "rice shell pest 属于常见农业害虫。可取食叶片、茎秆、花器、果实或吸食汁液，导致植株长势下降、产量损失和品质降低。",
+      "trigger_conditions": "水稻 生长期遇到高温高湿、田间郁闭、杂草较多或虫源基数较高时风险上升。",
+      "suggested_actions": "加强田间巡查和虫情监测，优先采用农业防治、生物防治和物理诱控，必要时选择对口药剂轮换使用。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 14,
+      "class_name": "grub",
+      "category_type": "pest",
+      "crop": "旱地与地下部作物",
+      "pest_group": "甲虫类害虫",
+      "harm_or_symptom": "grub 属于甲虫类害虫。成虫啃食叶片、花器或果面，幼虫可危害根部和地下组织，造成缺苗、缺刻和果面伤痕。",
+      "trigger_conditions": "杂草较多、土壤有机残体丰富、成虫盛发期和幼苗期管理薄弱时易发生。",
+      "suggested_actions": "清除杂草和残体，结合诱捕、翻耕和土壤处理减少虫源，严重时在成虫盛发期进行点片防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 15,
+      "class_name": "mole cricket",
+      "category_type": "pest",
+      "crop": "旱地与地下部作物",
+      "pest_group": "直翅目或地下害虫",
+      "harm_or_symptom": "mole cricket 属于直翅目或地下害虫。取食幼苗、根系和近地表组织，可能造成缺苗断垄、根部受伤和植株倒伏。",
+      "trigger_conditions": "土壤湿度适宜、杂草和未腐熟有机肥较多、苗期防护不足时危害较重。",
+      "suggested_actions": "播前整地灭茬、清除田边杂草，结合诱杀、土壤处理和成虫迁飞期监测开展防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 16,
+      "class_name": "wireworm",
+      "category_type": "pest",
+      "crop": "旱地与地下部作物",
+      "pest_group": "直翅目或地下害虫",
+      "harm_or_symptom": "wireworm 属于直翅目或地下害虫。取食幼苗、根系和近地表组织，可能造成缺苗断垄、根部受伤和植株倒伏。",
+      "trigger_conditions": "土壤湿度适宜、杂草和未腐熟有机肥较多、苗期防护不足时危害较重。",
+      "suggested_actions": "播前整地灭茬、清除田边杂草，结合诱杀、土壤处理和成虫迁飞期监测开展防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 17,
+      "class_name": "white margined moth",
+      "category_type": "pest",
+      "crop": "旱地与地下部作物",
+      "pest_group": "鳞翅目食叶害虫",
+      "harm_or_symptom": "white margined moth 属于鳞翅目食叶害虫。幼虫啃食叶片、嫩梢、花蕾或果面，可形成孔洞、缺刻和卷叶，大发生时造成明显减产。",
+      "trigger_conditions": "温暖季节、成虫迁飞或产卵高峰后，低龄幼虫集中取食期危害增长快。",
+      "suggested_actions": "利用性诱剂、灯诱和田间巡查掌握发生期，在低龄幼虫集中取食阶段采用生物制剂或对口药剂防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 18,
+      "class_name": "black cutworm",
+      "category_type": "pest",
+      "crop": "旱地与地下部作物",
+      "pest_group": "鳞翅目食叶害虫",
+      "harm_or_symptom": "black cutworm 属于鳞翅目食叶害虫。幼虫啃食叶片、嫩梢、花蕾或果面，可形成孔洞、缺刻和卷叶，大发生时造成明显减产。",
+      "trigger_conditions": "温暖季节、成虫迁飞或产卵高峰后，低龄幼虫集中取食期危害增长快。",
+      "suggested_actions": "利用性诱剂、灯诱和田间巡查掌握发生期，在低龄幼虫集中取食阶段采用生物制剂或对口药剂防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 19,
+      "class_name": "large cutworm",
+      "category_type": "pest",
+      "crop": "旱地与地下部作物",
+      "pest_group": "鳞翅目食叶害虫",
+      "harm_or_symptom": "large cutworm 属于鳞翅目食叶害虫。幼虫啃食叶片、嫩梢、花蕾或果面，可形成孔洞、缺刻和卷叶，大发生时造成明显减产。",
+      "trigger_conditions": "温暖季节、成虫迁飞或产卵高峰后，低龄幼虫集中取食期危害增长快。",
+      "suggested_actions": "利用性诱剂、灯诱和田间巡查掌握发生期，在低龄幼虫集中取食阶段采用生物制剂或对口药剂防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 20,
+      "class_name": "yellow cutworm",
+      "category_type": "pest",
+      "crop": "旱地与地下部作物",
+      "pest_group": "鳞翅目食叶害虫",
+      "harm_or_symptom": "yellow cutworm 属于鳞翅目食叶害虫。幼虫啃食叶片、嫩梢、花蕾或果面，可形成孔洞、缺刻和卷叶，大发生时造成明显减产。",
+      "trigger_conditions": "温暖季节、成虫迁飞或产卵高峰后，低龄幼虫集中取食期危害增长快。",
+      "suggested_actions": "利用性诱剂、灯诱和田间巡查掌握发生期，在低龄幼虫集中取食阶段采用生物制剂或对口药剂防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 21,
+      "class_name": "red spider",
+      "category_type": "pest",
+      "crop": "旱地与地下部作物",
+      "pest_group": "螨类害虫",
+      "harm_or_symptom": "red spider 属于螨类害虫。多在叶背、嫩梢或果面刺吸危害，造成褪绿斑、锈斑、卷叶和长势衰弱，高温干旱时扩展较快。",
+      "trigger_conditions": "高温干旱、用药不当破坏天敌、树势或苗势偏弱时易出现高密度发生。",
+      "suggested_actions": "加强田间湿度和虫口监测，保护捕食螨等天敌，必要时轮换使用专用杀螨剂，避免长期单一用药。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 3,
+          "critical": 8
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 22,
+      "class_name": "corn borer",
+      "category_type": "pest",
+      "crop": "玉米",
+      "pest_group": "蛀食性害虫",
+      "harm_or_symptom": "corn borer 属于蛀食性害虫。幼虫常钻蛀茎秆、枝条、果实或叶鞘，破坏输导组织，造成枯心、折秆、落果或枝梢衰弱。",
+      "trigger_conditions": "温暖湿润、田间残株和越冬虫源较多、成虫产卵期监测不足时易加重。",
+      "suggested_actions": "清除受害残体和越冬虫源，结合性诱、灯诱或糖醋液监测，在卵孵化高峰和低龄幼虫期进行针对性防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 2,
+          "critical": 5
+        },
+        "confidence_thresholds": {
+          "medium": 0.32,
+          "high": 0.58,
+          "critical": 0.8
+        }
+      }
+    },
+    {
+      "class_id": 23,
+      "class_name": "army worm",
+      "category_type": "pest",
+      "crop": "玉米/小麦等粮食作物",
+      "pest_group": "鳞翅目食叶害虫",
+      "harm_or_symptom": "army worm 属于鳞翅目食叶害虫。幼虫啃食叶片、嫩梢、花蕾或果面，可形成孔洞、缺刻和卷叶，大发生时造成明显减产。",
+      "trigger_conditions": "温暖季节、成虫迁飞或产卵高峰后，低龄幼虫集中取食期危害增长快。",
+      "suggested_actions": "利用性诱剂、灯诱和田间巡查掌握发生期，在低龄幼虫集中取食阶段采用生物制剂或对口药剂防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 24,
+      "class_name": "aphids",
+      "category_type": "pest",
+      "crop": "玉米/小麦等粮食作物",
+      "pest_group": "刺吸式害虫",
+      "harm_or_symptom": "aphids 属于刺吸式害虫。成虫或若虫吸食叶片、嫩梢和穗部汁液，易导致叶片失绿、卷曲、煤污病或病毒病传播风险上升。",
+      "trigger_conditions": "高温少雨、氮肥偏多、嫩梢旺长和天敌数量不足时容易快速繁殖。",
+      "suggested_actions": "保护天敌，减少氮肥偏施；发生初期可用黄板、诱集和选择性药剂控制，重点喷施叶背和嫩梢部位。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 3,
+          "critical": 8
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 25,
+      "class_name": "Potosiabre vitarsis",
+      "category_type": "pest",
+      "crop": "玉米/小麦等粮食作物",
+      "pest_group": "甲虫类害虫",
+      "harm_or_symptom": "Potosiabre vitarsis 属于甲虫类害虫。成虫啃食叶片、花器或果面，幼虫可危害根部和地下组织，造成缺苗、缺刻和果面伤痕。",
+      "trigger_conditions": "杂草较多、土壤有机残体丰富、成虫盛发期和幼苗期管理薄弱时易发生。",
+      "suggested_actions": "清除杂草和残体，结合诱捕、翻耕和土壤处理减少虫源，严重时在成虫盛发期进行点片防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 26,
+      "class_name": "peach borer",
+      "category_type": "pest",
+      "crop": "玉米/小麦等粮食作物",
+      "pest_group": "蛀食性害虫",
+      "harm_or_symptom": "peach borer 属于蛀食性害虫。幼虫常钻蛀茎秆、枝条、果实或叶鞘，破坏输导组织，造成枯心、折秆、落果或枝梢衰弱。",
+      "trigger_conditions": "温暖湿润、田间残株和越冬虫源较多、成虫产卵期监测不足时易加重。",
+      "suggested_actions": "清除受害残体和越冬虫源，结合性诱、灯诱或糖醋液监测，在卵孵化高峰和低龄幼虫期进行针对性防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 2,
+          "critical": 5
+        },
+        "confidence_thresholds": {
+          "medium": 0.32,
+          "high": 0.58,
+          "critical": 0.8
+        }
+      }
+    },
+    {
+      "class_id": 27,
+      "class_name": "english grain aphid",
+      "category_type": "pest",
+      "crop": "玉米/小麦等粮食作物",
+      "pest_group": "刺吸式害虫",
+      "harm_or_symptom": "english grain aphid 属于刺吸式害虫。成虫或若虫吸食叶片、嫩梢和穗部汁液，易导致叶片失绿、卷曲、煤污病或病毒病传播风险上升。",
+      "trigger_conditions": "高温少雨、氮肥偏多、嫩梢旺长和天敌数量不足时容易快速繁殖。",
+      "suggested_actions": "保护天敌，减少氮肥偏施；发生初期可用黄板、诱集和选择性药剂控制，重点喷施叶背和嫩梢部位。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 3,
+          "critical": 8
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 28,
+      "class_name": "green bug",
+      "category_type": "pest",
+      "crop": "玉米/小麦等粮食作物",
+      "pest_group": "常见农业害虫",
+      "harm_or_symptom": "green bug 属于常见农业害虫。可取食叶片、茎秆、花器、果实或吸食汁液，导致植株长势下降、产量损失和品质降低。",
+      "trigger_conditions": "玉米/小麦等粮食作物 生长期遇到高温高湿、田间郁闭、杂草较多或虫源基数较高时风险上升。",
+      "suggested_actions": "加强田间巡查和虫情监测，优先采用农业防治、生物防治和物理诱控，必要时选择对口药剂轮换使用。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 29,
+      "class_name": "bird cherry-oataphid",
+      "category_type": "pest",
+      "crop": "玉米/小麦等粮食作物",
+      "pest_group": "刺吸式害虫",
+      "harm_or_symptom": "bird cherry-oataphid 属于刺吸式害虫。成虫或若虫吸食叶片、嫩梢和穗部汁液，易导致叶片失绿、卷曲、煤污病或病毒病传播风险上升。",
+      "trigger_conditions": "高温少雨、氮肥偏多、嫩梢旺长和天敌数量不足时容易快速繁殖。",
+      "suggested_actions": "保护天敌，减少氮肥偏施；发生初期可用黄板、诱集和选择性药剂控制，重点喷施叶背和嫩梢部位。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 3,
+          "critical": 8
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 30,
+      "class_name": "wheat blossom midge",
+      "category_type": "pest",
+      "crop": "小麦",
+      "pest_group": "蝇蚊类害虫",
+      "harm_or_symptom": "wheat blossom midge 属于蝇蚊类害虫。幼虫多潜食叶片、穗部、果实或组织内部，造成虫道、腐烂、畸形和落果，部分种类检疫风险较高。",
+      "trigger_conditions": "高湿、果实成熟期、田间烂果或病残体清理不及时会提高虫源基数。",
+      "suggested_actions": "及时清理受害果和残体，配合诱剂诱杀、套袋、检疫处理和低龄期药剂防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 2,
+          "critical": 5
+        },
+        "confidence_thresholds": {
+          "medium": 0.32,
+          "high": 0.58,
+          "critical": 0.8
+        }
+      }
+    },
+    {
+      "class_id": 31,
+      "class_name": "penthaleus major",
+      "category_type": "pest",
+      "crop": "玉米/小麦等粮食作物",
+      "pest_group": "常见农业害虫",
+      "harm_or_symptom": "penthaleus major 属于常见农业害虫。可取食叶片、茎秆、花器、果实或吸食汁液，导致植株长势下降、产量损失和品质降低。",
+      "trigger_conditions": "玉米/小麦等粮食作物 生长期遇到高温高湿、田间郁闭、杂草较多或虫源基数较高时风险上升。",
+      "suggested_actions": "加强田间巡查和虫情监测，优先采用农业防治、生物防治和物理诱控，必要时选择对口药剂轮换使用。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 32,
+      "class_name": "longlegged spider mite",
+      "category_type": "pest",
+      "crop": "玉米/小麦等粮食作物",
+      "pest_group": "螨类害虫",
+      "harm_or_symptom": "longlegged spider mite 属于螨类害虫。多在叶背、嫩梢或果面刺吸危害，造成褪绿斑、锈斑、卷叶和长势衰弱，高温干旱时扩展较快。",
+      "trigger_conditions": "高温干旱、用药不当破坏天敌、树势或苗势偏弱时易出现高密度发生。",
+      "suggested_actions": "加强田间湿度和虫口监测，保护捕食螨等天敌，必要时轮换使用专用杀螨剂，避免长期单一用药。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 3,
+          "critical": 8
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 33,
+      "class_name": "wheat phloeothrips",
+      "category_type": "pest",
+      "crop": "小麦",
+      "pest_group": "蓟马类害虫",
+      "harm_or_symptom": "wheat phloeothrips 属于蓟马类害虫。常锉吸嫩叶、花器和幼果组织，形成银白色斑痕、畸形或落花落果，干旱少雨时风险较高。",
+      "trigger_conditions": "干旱少雨、花期或嫩梢期持续较长、周边杂草寄主较多时风险上升。",
+      "suggested_actions": "使用蓝板监测和诱杀，清除田间杂草，在花期或嫩梢期选择低残留药剂并注意轮换作用机制。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 3,
+          "critical": 8
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 34,
+      "class_name": "wheat sawfly",
+      "category_type": "pest",
+      "crop": "小麦",
+      "pest_group": "蝇蚊类害虫",
+      "harm_or_symptom": "wheat sawfly 属于蝇蚊类害虫。幼虫多潜食叶片、穗部、果实或组织内部，造成虫道、腐烂、畸形和落果，部分种类检疫风险较高。",
+      "trigger_conditions": "高湿、果实成熟期、田间烂果或病残体清理不及时会提高虫源基数。",
+      "suggested_actions": "及时清理受害果和残体，配合诱剂诱杀、套袋、检疫处理和低龄期药剂防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 2,
+          "critical": 5
+        },
+        "confidence_thresholds": {
+          "medium": 0.32,
+          "high": 0.58,
+          "critical": 0.8
+        }
+      }
+    },
+    {
+      "class_id": 35,
+      "class_name": "cerodonta denticornis",
+      "category_type": "pest",
+      "crop": "玉米",
+      "pest_group": "蝇蚊类害虫",
+      "harm_or_symptom": "cerodonta denticornis 属于蝇蚊类害虫。幼虫多潜食叶片、穗部、果实或组织内部，造成虫道、腐烂、畸形和落果，部分种类检疫风险较高。",
+      "trigger_conditions": "高湿、果实成熟期、田间烂果或病残体清理不及时会提高虫源基数。",
+      "suggested_actions": "及时清理受害果和残体，配合诱剂诱杀、套袋、检疫处理和低龄期药剂防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 2,
+          "critical": 5
+        },
+        "confidence_thresholds": {
+          "medium": 0.32,
+          "high": 0.58,
+          "critical": 0.8
+        }
+      }
+    },
+    {
+      "class_id": 36,
+      "class_name": "beet fly",
+      "category_type": "pest",
+      "crop": "甜菜",
+      "pest_group": "蝇蚊类害虫",
+      "harm_or_symptom": "beet fly 属于蝇蚊类害虫。幼虫多潜食叶片、穗部、果实或组织内部，造成虫道、腐烂、畸形和落果，部分种类检疫风险较高。",
+      "trigger_conditions": "高湿、果实成熟期、田间烂果或病残体清理不及时会提高虫源基数。",
+      "suggested_actions": "及时清理受害果和残体，配合诱剂诱杀、套袋、检疫处理和低龄期药剂防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 2,
+          "critical": 5
+        },
+        "confidence_thresholds": {
+          "medium": 0.32,
+          "high": 0.58,
+          "critical": 0.8
+        }
+      }
+    },
+    {
+      "class_id": 37,
+      "class_name": "flea beetle",
+      "category_type": "pest",
+      "crop": "甜菜",
+      "pest_group": "甲虫类害虫",
+      "harm_or_symptom": "flea beetle 属于甲虫类害虫。成虫啃食叶片、花器或果面，幼虫可危害根部和地下组织，造成缺苗、缺刻和果面伤痕。",
+      "trigger_conditions": "杂草较多、土壤有机残体丰富、成虫盛发期和幼苗期管理薄弱时易发生。",
+      "suggested_actions": "清除杂草和残体，结合诱捕、翻耕和土壤处理减少虫源，严重时在成虫盛发期进行点片防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 38,
+      "class_name": "cabbage army worm",
+      "category_type": "pest",
+      "crop": "甘蓝",
+      "pest_group": "鳞翅目食叶害虫",
+      "harm_or_symptom": "cabbage army worm 属于鳞翅目食叶害虫。幼虫啃食叶片、嫩梢、花蕾或果面，可形成孔洞、缺刻和卷叶，大发生时造成明显减产。",
+      "trigger_conditions": "温暖季节、成虫迁飞或产卵高峰后，低龄幼虫集中取食期危害增长快。",
+      "suggested_actions": "利用性诱剂、灯诱和田间巡查掌握发生期，在低龄幼虫集中取食阶段采用生物制剂或对口药剂防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 39,
+      "class_name": "beet army worm",
+      "category_type": "pest",
+      "crop": "甜菜",
+      "pest_group": "鳞翅目食叶害虫",
+      "harm_or_symptom": "beet army worm 属于鳞翅目食叶害虫。幼虫啃食叶片、嫩梢、花蕾或果面，可形成孔洞、缺刻和卷叶，大发生时造成明显减产。",
+      "trigger_conditions": "温暖季节、成虫迁飞或产卵高峰后，低龄幼虫集中取食期危害增长快。",
+      "suggested_actions": "利用性诱剂、灯诱和田间巡查掌握发生期，在低龄幼虫集中取食阶段采用生物制剂或对口药剂防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 40,
+      "class_name": "Beet spot flies",
+      "category_type": "pest",
+      "crop": "甜菜",
+      "pest_group": "常见农业害虫",
+      "harm_or_symptom": "Beet spot flies 属于常见农业害虫。可取食叶片、茎秆、花器、果实或吸食汁液，导致植株长势下降、产量损失和品质降低。",
+      "trigger_conditions": "甜菜 生长期遇到高温高湿、田间郁闭、杂草较多或虫源基数较高时风险上升。",
+      "suggested_actions": "加强田间巡查和虫情监测，优先采用农业防治、生物防治和物理诱控，必要时选择对口药剂轮换使用。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 41,
+      "class_name": "meadow moth",
+      "category_type": "pest",
+      "crop": "甜菜",
+      "pest_group": "鳞翅目食叶害虫",
+      "harm_or_symptom": "meadow moth 属于鳞翅目食叶害虫。幼虫啃食叶片、嫩梢、花蕾或果面，可形成孔洞、缺刻和卷叶，大发生时造成明显减产。",
+      "trigger_conditions": "温暖季节、成虫迁飞或产卵高峰后，低龄幼虫集中取食期危害增长快。",
+      "suggested_actions": "利用性诱剂、灯诱和田间巡查掌握发生期，在低龄幼虫集中取食阶段采用生物制剂或对口药剂防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 42,
+      "class_name": "beet weevil",
+      "category_type": "pest",
+      "crop": "甜菜",
+      "pest_group": "象甲类害虫",
+      "harm_or_symptom": "beet weevil 属于象甲类害虫。成虫取食叶片、嫩梢或果实，幼虫可蛀食种子、果核、根部或茎部，造成缺刻、落果和商品性下降。",
+      "trigger_conditions": "成虫羽化期、果实膨大期、土壤和落果中越冬虫源较多时危害明显。",
+      "suggested_actions": "结合人工摘除虫果、清园翻土和诱捕监测，在成虫出土或产卵前后开展综合防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 2,
+          "critical": 5
+        },
+        "confidence_thresholds": {
+          "medium": 0.32,
+          "high": 0.58,
+          "critical": 0.8
+        }
+      }
+    },
+    {
+      "class_id": 43,
+      "class_name": "sericaorient alismots chulsky",
+      "category_type": "pest",
+      "crop": "甜菜",
+      "pest_group": "甲虫类害虫",
+      "harm_or_symptom": "sericaorient alismots chulsky 属于甲虫类害虫。成虫啃食叶片、花器或果面，幼虫可危害根部和地下组织，造成缺苗、缺刻和果面伤痕。",
+      "trigger_conditions": "杂草较多、土壤有机残体丰富、成虫盛发期和幼苗期管理薄弱时易发生。",
+      "suggested_actions": "清除杂草和残体，结合诱捕、翻耕和土壤处理减少虫源，严重时在成虫盛发期进行点片防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 44,
+      "class_name": "alfalfa weevil",
+      "category_type": "pest",
+      "crop": "苜蓿",
+      "pest_group": "象甲类害虫",
+      "harm_or_symptom": "alfalfa weevil 属于象甲类害虫。成虫取食叶片、嫩梢或果实，幼虫可蛀食种子、果核、根部或茎部，造成缺刻、落果和商品性下降。",
+      "trigger_conditions": "成虫羽化期、果实膨大期、土壤和落果中越冬虫源较多时危害明显。",
+      "suggested_actions": "结合人工摘除虫果、清园翻土和诱捕监测，在成虫出土或产卵前后开展综合防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 2,
+          "critical": 5
+        },
+        "confidence_thresholds": {
+          "medium": 0.32,
+          "high": 0.58,
+          "critical": 0.8
+        }
+      }
+    },
+    {
+      "class_id": 45,
+      "class_name": "flax budworm",
+      "category_type": "pest",
+      "crop": "苜蓿和豆科牧草",
+      "pest_group": "鳞翅目食叶害虫",
+      "harm_or_symptom": "flax budworm 属于鳞翅目食叶害虫。幼虫啃食叶片、嫩梢、花蕾或果面，可形成孔洞、缺刻和卷叶，大发生时造成明显减产。",
+      "trigger_conditions": "温暖季节、成虫迁飞或产卵高峰后，低龄幼虫集中取食期危害增长快。",
+      "suggested_actions": "利用性诱剂、灯诱和田间巡查掌握发生期，在低龄幼虫集中取食阶段采用生物制剂或对口药剂防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 46,
+      "class_name": "alfalfa plant bug",
+      "category_type": "pest",
+      "crop": "苜蓿",
+      "pest_group": "刺吸式害虫",
+      "harm_or_symptom": "alfalfa plant bug 属于刺吸式害虫。成虫或若虫吸食叶片、嫩梢和穗部汁液，易导致叶片失绿、卷曲、煤污病或病毒病传播风险上升。",
+      "trigger_conditions": "高温少雨、氮肥偏多、嫩梢旺长和天敌数量不足时容易快速繁殖。",
+      "suggested_actions": "保护天敌，减少氮肥偏施；发生初期可用黄板、诱集和选择性药剂控制，重点喷施叶背和嫩梢部位。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 3,
+          "critical": 8
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 47,
+      "class_name": "tarnished plant bug",
+      "category_type": "pest",
+      "crop": "苜蓿和豆科牧草",
+      "pest_group": "刺吸式害虫",
+      "harm_or_symptom": "tarnished plant bug 属于刺吸式害虫。成虫或若虫吸食叶片、嫩梢和穗部汁液，易导致叶片失绿、卷曲、煤污病或病毒病传播风险上升。",
+      "trigger_conditions": "高温少雨、氮肥偏多、嫩梢旺长和天敌数量不足时容易快速繁殖。",
+      "suggested_actions": "保护天敌，减少氮肥偏施；发生初期可用黄板、诱集和选择性药剂控制，重点喷施叶背和嫩梢部位。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 3,
+          "critical": 8
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 48,
+      "class_name": "Locustoidea",
+      "category_type": "pest",
+      "crop": "苜蓿和豆科牧草",
+      "pest_group": "直翅目或地下害虫",
+      "harm_or_symptom": "Locustoidea 属于直翅目或地下害虫。取食幼苗、根系和近地表组织，可能造成缺苗断垄、根部受伤和植株倒伏。",
+      "trigger_conditions": "土壤湿度适宜、杂草和未腐熟有机肥较多、苗期防护不足时危害较重。",
+      "suggested_actions": "播前整地灭茬、清除田边杂草，结合诱杀、土壤处理和成虫迁飞期监测开展防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 49,
+      "class_name": "lytta polita",
+      "category_type": "pest",
+      "crop": "苜蓿和豆科牧草",
+      "pest_group": "甲虫类害虫",
+      "harm_or_symptom": "lytta polita 属于甲虫类害虫。成虫啃食叶片、花器或果面，幼虫可危害根部和地下组织，造成缺苗、缺刻和果面伤痕。",
+      "trigger_conditions": "杂草较多、土壤有机残体丰富、成虫盛发期和幼苗期管理薄弱时易发生。",
+      "suggested_actions": "清除杂草和残体，结合诱捕、翻耕和土壤处理减少虫源，严重时在成虫盛发期进行点片防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 50,
+      "class_name": "legume blister beetle",
+      "category_type": "pest",
+      "crop": "甜菜",
+      "pest_group": "甲虫类害虫",
+      "harm_or_symptom": "legume blister beetle 属于甲虫类害虫。成虫啃食叶片、花器或果面，幼虫可危害根部和地下组织，造成缺苗、缺刻和果面伤痕。",
+      "trigger_conditions": "杂草较多、土壤有机残体丰富、成虫盛发期和幼苗期管理薄弱时易发生。",
+      "suggested_actions": "清除杂草和残体，结合诱捕、翻耕和土壤处理减少虫源，严重时在成虫盛发期进行点片防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 51,
+      "class_name": "blister beetle",
+      "category_type": "pest",
+      "crop": "甜菜",
+      "pest_group": "甲虫类害虫",
+      "harm_or_symptom": "blister beetle 属于甲虫类害虫。成虫啃食叶片、花器或果面，幼虫可危害根部和地下组织，造成缺苗、缺刻和果面伤痕。",
+      "trigger_conditions": "杂草较多、土壤有机残体丰富、成虫盛发期和幼苗期管理薄弱时易发生。",
+      "suggested_actions": "清除杂草和残体，结合诱捕、翻耕和土壤处理减少虫源，严重时在成虫盛发期进行点片防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 52,
+      "class_name": "therioaphis maculata Buckton",
+      "category_type": "pest",
+      "crop": "苜蓿和豆科牧草",
+      "pest_group": "常见农业害虫",
+      "harm_or_symptom": "therioaphis maculata Buckton 属于常见农业害虫。可取食叶片、茎秆、花器、果实或吸食汁液，导致植株长势下降、产量损失和品质降低。",
+      "trigger_conditions": "苜蓿和豆科牧草 生长期遇到高温高湿、田间郁闭、杂草较多或虫源基数较高时风险上升。",
+      "suggested_actions": "加强田间巡查和虫情监测，优先采用农业防治、生物防治和物理诱控，必要时选择对口药剂轮换使用。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 53,
+      "class_name": "odontothrips loti",
+      "category_type": "pest",
+      "crop": "苜蓿和豆科牧草",
+      "pest_group": "蓟马类害虫",
+      "harm_or_symptom": "odontothrips loti 属于蓟马类害虫。常锉吸嫩叶、花器和幼果组织，形成银白色斑痕、畸形或落花落果，干旱少雨时风险较高。",
+      "trigger_conditions": "干旱少雨、花期或嫩梢期持续较长、周边杂草寄主较多时风险上升。",
+      "suggested_actions": "使用蓝板监测和诱杀，清除田间杂草，在花期或嫩梢期选择低残留药剂并注意轮换作用机制。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 3,
+          "critical": 8
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 54,
+      "class_name": "Thrips",
+      "category_type": "pest",
+      "crop": "苜蓿和豆科牧草",
+      "pest_group": "蓟马类害虫",
+      "harm_or_symptom": "Thrips 属于蓟马类害虫。常锉吸嫩叶、花器和幼果组织，形成银白色斑痕、畸形或落花落果，干旱少雨时风险较高。",
+      "trigger_conditions": "干旱少雨、花期或嫩梢期持续较长、周边杂草寄主较多时风险上升。",
+      "suggested_actions": "使用蓝板监测和诱杀，清除田间杂草，在花期或嫩梢期选择低残留药剂并注意轮换作用机制。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 3,
+          "critical": 8
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 55,
+      "class_name": "alfalfa seed chalcid",
+      "category_type": "pest",
+      "crop": "苜蓿",
+      "pest_group": "常见农业害虫",
+      "harm_or_symptom": "alfalfa seed chalcid 属于常见农业害虫。可取食叶片、茎秆、花器、果实或吸食汁液，导致植株长势下降、产量损失和品质降低。",
+      "trigger_conditions": "苜蓿 生长期遇到高温高湿、田间郁闭、杂草较多或虫源基数较高时风险上升。",
+      "suggested_actions": "加强田间巡查和虫情监测，优先采用农业防治、生物防治和物理诱控，必要时选择对口药剂轮换使用。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 56,
+      "class_name": "Pieris canidia",
+      "category_type": "pest",
+      "crop": "苜蓿和豆科牧草",
+      "pest_group": "鳞翅目食叶害虫",
+      "harm_or_symptom": "Pieris canidia 属于鳞翅目食叶害虫。幼虫啃食叶片、嫩梢、花蕾或果面，可形成孔洞、缺刻和卷叶，大发生时造成明显减产。",
+      "trigger_conditions": "温暖季节、成虫迁飞或产卵高峰后，低龄幼虫集中取食期危害增长快。",
+      "suggested_actions": "利用性诱剂、灯诱和田间巡查掌握发生期，在低龄幼虫集中取食阶段采用生物制剂或对口药剂防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 57,
+      "class_name": "Apolygus lucorum",
+      "category_type": "pest",
+      "crop": "葡萄",
+      "pest_group": "常见农业害虫",
+      "harm_or_symptom": "Apolygus lucorum 属于常见农业害虫。可取食叶片、茎秆、花器、果实或吸食汁液，导致植株长势下降、产量损失和品质降低。",
+      "trigger_conditions": "葡萄 生长期遇到高温高湿、田间郁闭、杂草较多或虫源基数较高时风险上升。",
+      "suggested_actions": "加强田间巡查和虫情监测，优先采用农业防治、生物防治和物理诱控，必要时选择对口药剂轮换使用。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 58,
+      "class_name": "Limacodidae",
+      "category_type": "pest",
+      "crop": "葡萄",
+      "pest_group": "鳞翅目食叶害虫",
+      "harm_or_symptom": "Limacodidae 属于鳞翅目食叶害虫。幼虫啃食叶片、嫩梢、花蕾或果面，可形成孔洞、缺刻和卷叶，大发生时造成明显减产。",
+      "trigger_conditions": "温暖季节、成虫迁飞或产卵高峰后，低龄幼虫集中取食期危害增长快。",
+      "suggested_actions": "利用性诱剂、灯诱和田间巡查掌握发生期，在低龄幼虫集中取食阶段采用生物制剂或对口药剂防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 59,
+      "class_name": "Viteus vitifoliae",
+      "category_type": "pest",
+      "crop": "葡萄",
+      "pest_group": "刺吸式害虫",
+      "harm_or_symptom": "Viteus vitifoliae 属于刺吸式害虫。成虫或若虫吸食叶片、嫩梢和穗部汁液，易导致叶片失绿、卷曲、煤污病或病毒病传播风险上升。",
+      "trigger_conditions": "高温少雨、氮肥偏多、嫩梢旺长和天敌数量不足时容易快速繁殖。",
+      "suggested_actions": "保护天敌，减少氮肥偏施；发生初期可用黄板、诱集和选择性药剂控制，重点喷施叶背和嫩梢部位。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 3,
+          "critical": 8
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 60,
+      "class_name": "Colomerus vitis",
+      "category_type": "pest",
+      "crop": "葡萄",
+      "pest_group": "螨类害虫",
+      "harm_or_symptom": "Colomerus vitis 属于螨类害虫。多在叶背、嫩梢或果面刺吸危害，造成褪绿斑、锈斑、卷叶和长势衰弱，高温干旱时扩展较快。",
+      "trigger_conditions": "高温干旱、用药不当破坏天敌、树势或苗势偏弱时易出现高密度发生。",
+      "suggested_actions": "加强田间湿度和虫口监测，保护捕食螨等天敌，必要时轮换使用专用杀螨剂，避免长期单一用药。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 3,
+          "critical": 8
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 61,
+      "class_name": "Brevipoalpus lewisi McGregor",
+      "category_type": "pest",
+      "crop": "葡萄",
+      "pest_group": "螨类害虫",
+      "harm_or_symptom": "Brevipoalpus lewisi McGregor 属于螨类害虫。多在叶背、嫩梢或果面刺吸危害，造成褪绿斑、锈斑、卷叶和长势衰弱，高温干旱时扩展较快。",
+      "trigger_conditions": "高温干旱、用药不当破坏天敌、树势或苗势偏弱时易出现高密度发生。",
+      "suggested_actions": "加强田间湿度和虫口监测，保护捕食螨等天敌，必要时轮换使用专用杀螨剂，避免长期单一用药。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 3,
+          "critical": 8
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 62,
+      "class_name": "oides decempunctata",
+      "category_type": "pest",
+      "crop": "葡萄",
+      "pest_group": "甲虫类害虫",
+      "harm_or_symptom": "oides decempunctata 属于甲虫类害虫。成虫啃食叶片、花器或果面，幼虫可危害根部和地下组织，造成缺苗、缺刻和果面伤痕。",
+      "trigger_conditions": "杂草较多、土壤有机残体丰富、成虫盛发期和幼苗期管理薄弱时易发生。",
+      "suggested_actions": "清除杂草和残体，结合诱捕、翻耕和土壤处理减少虫源，严重时在成虫盛发期进行点片防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 63,
+      "class_name": "Polyphagotars onemus latus",
+      "category_type": "pest",
+      "crop": "葡萄",
+      "pest_group": "常见农业害虫",
+      "harm_or_symptom": "Polyphagotars onemus latus 属于常见农业害虫。可取食叶片、茎秆、花器、果实或吸食汁液，导致植株长势下降、产量损失和品质降低。",
+      "trigger_conditions": "葡萄 生长期遇到高温高湿、田间郁闭、杂草较多或虫源基数较高时风险上升。",
+      "suggested_actions": "加强田间巡查和虫情监测，优先采用农业防治、生物防治和物理诱控，必要时选择对口药剂轮换使用。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 64,
+      "class_name": "Pseudococcus comstocki Kuwana",
+      "category_type": "pest",
+      "crop": "葡萄",
+      "pest_group": "蚧类害虫",
+      "harm_or_symptom": "Pseudococcus comstocki Kuwana 属于蚧类害虫。多固定在枝条、叶片或果实表面吸汁危害，分泌蜜露并诱发煤污，造成树势衰弱和果品外观下降。",
+      "trigger_conditions": "果园郁闭、通风透光差、冬季清园不足和天敌受抑时虫口容易累积。",
+      "suggested_actions": "冬春清园刮除虫源，保护瓢虫等天敌，若虫孵化盛期使用矿物油或选择性药剂均匀覆盖。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 3,
+          "critical": 8
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 65,
+      "class_name": "parathrene regalis",
+      "category_type": "pest",
+      "crop": "葡萄",
+      "pest_group": "蛀食性害虫",
+      "harm_or_symptom": "parathrene regalis 属于蛀食性害虫。幼虫常钻蛀茎秆、枝条、果实或叶鞘，破坏输导组织，造成枯心、折秆、落果或枝梢衰弱。",
+      "trigger_conditions": "温暖湿润、田间残株和越冬虫源较多、成虫产卵期监测不足时易加重。",
+      "suggested_actions": "清除受害残体和越冬虫源，结合性诱、灯诱或糖醋液监测，在卵孵化高峰和低龄幼虫期进行针对性防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 2,
+          "critical": 5
+        },
+        "confidence_thresholds": {
+          "medium": 0.32,
+          "high": 0.58,
+          "critical": 0.8
+        }
+      }
+    },
+    {
+      "class_id": 66,
+      "class_name": "Ampelophaga",
+      "category_type": "pest",
+      "crop": "葡萄",
+      "pest_group": "鳞翅目食叶害虫",
+      "harm_or_symptom": "Ampelophaga 属于鳞翅目食叶害虫。幼虫啃食叶片、嫩梢、花蕾或果面，可形成孔洞、缺刻和卷叶，大发生时造成明显减产。",
+      "trigger_conditions": "温暖季节、成虫迁飞或产卵高峰后，低龄幼虫集中取食期危害增长快。",
+      "suggested_actions": "利用性诱剂、灯诱和田间巡查掌握发生期，在低龄幼虫集中取食阶段采用生物制剂或对口药剂防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 67,
+      "class_name": "Lycorma delicatula",
+      "category_type": "pest",
+      "crop": "葡萄",
+      "pest_group": "常见农业害虫",
+      "harm_or_symptom": "Lycorma delicatula 属于常见农业害虫。可取食叶片、茎秆、花器、果实或吸食汁液，导致植株长势下降、产量损失和品质降低。",
+      "trigger_conditions": "葡萄 生长期遇到高温高湿、田间郁闭、杂草较多或虫源基数较高时风险上升。",
+      "suggested_actions": "加强田间巡查和虫情监测，优先采用农业防治、生物防治和物理诱控，必要时选择对口药剂轮换使用。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 68,
+      "class_name": "Xylotrechus",
+      "category_type": "pest",
+      "crop": "葡萄",
+      "pest_group": "蛀食性害虫",
+      "harm_or_symptom": "Xylotrechus 属于蛀食性害虫。幼虫常钻蛀茎秆、枝条、果实或叶鞘，破坏输导组织，造成枯心、折秆、落果或枝梢衰弱。",
+      "trigger_conditions": "温暖湿润、田间残株和越冬虫源较多、成虫产卵期监测不足时易加重。",
+      "suggested_actions": "清除受害残体和越冬虫源，结合性诱、灯诱或糖醋液监测，在卵孵化高峰和低龄幼虫期进行针对性防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 2,
+          "critical": 5
+        },
+        "confidence_thresholds": {
+          "medium": 0.32,
+          "high": 0.58,
+          "critical": 0.8
+        }
+      }
+    },
+    {
+      "class_id": 69,
+      "class_name": "Cicadella viridis",
+      "category_type": "pest",
+      "crop": "柑橘",
+      "pest_group": "刺吸式害虫",
+      "harm_or_symptom": "Cicadella viridis 属于刺吸式害虫。成虫或若虫吸食叶片、嫩梢和穗部汁液，易导致叶片失绿、卷曲、煤污病或病毒病传播风险上升。",
+      "trigger_conditions": "高温少雨、氮肥偏多、嫩梢旺长和天敌数量不足时容易快速繁殖。",
+      "suggested_actions": "保护天敌，减少氮肥偏施；发生初期可用黄板、诱集和选择性药剂控制，重点喷施叶背和嫩梢部位。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 3,
+          "critical": 8
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 70,
+      "class_name": "Miridae",
+      "category_type": "pest",
+      "crop": "柑橘",
+      "pest_group": "刺吸式害虫",
+      "harm_or_symptom": "Miridae 属于刺吸式害虫。成虫或若虫吸食叶片、嫩梢和穗部汁液，易导致叶片失绿、卷曲、煤污病或病毒病传播风险上升。",
+      "trigger_conditions": "高温少雨、氮肥偏多、嫩梢旺长和天敌数量不足时容易快速繁殖。",
+      "suggested_actions": "保护天敌，减少氮肥偏施；发生初期可用黄板、诱集和选择性药剂控制，重点喷施叶背和嫩梢部位。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 3,
+          "critical": 8
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 71,
+      "class_name": "Trialeurodes vaporariorum",
+      "category_type": "pest",
+      "crop": "柑橘",
+      "pest_group": "粉虱类害虫",
+      "harm_or_symptom": "Trialeurodes vaporariorum 属于粉虱类害虫。群集叶背吸汁并分泌蜜露，诱发煤污病，影响光合作用并可能传播病毒病。",
+      "trigger_conditions": "棚室高温、通风差、寄主连续种植和黄板监测不足时易暴发。",
+      "suggested_actions": "悬挂黄板监测，控制棚室湿度和杂草寄主，卵若虫混发时轮换使用不同作用机制药剂。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 3,
+          "critical": 8
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 72,
+      "class_name": "Erythroneura apicalis",
+      "category_type": "pest",
+      "crop": "柑橘",
+      "pest_group": "常见农业害虫",
+      "harm_or_symptom": "Erythroneura apicalis 属于常见农业害虫。可取食叶片、茎秆、花器、果实或吸食汁液，导致植株长势下降、产量损失和品质降低。",
+      "trigger_conditions": "柑橘 生长期遇到高温高湿、田间郁闭、杂草较多或虫源基数较高时风险上升。",
+      "suggested_actions": "加强田间巡查和虫情监测，优先采用农业防治、生物防治和物理诱控，必要时选择对口药剂轮换使用。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 73,
+      "class_name": "Papilio xuthus",
+      "category_type": "pest",
+      "crop": "柑橘",
+      "pest_group": "鳞翅目食叶害虫",
+      "harm_or_symptom": "Papilio xuthus 属于鳞翅目食叶害虫。幼虫啃食叶片、嫩梢、花蕾或果面，可形成孔洞、缺刻和卷叶，大发生时造成明显减产。",
+      "trigger_conditions": "温暖季节、成虫迁飞或产卵高峰后，低龄幼虫集中取食期危害增长快。",
+      "suggested_actions": "利用性诱剂、灯诱和田间巡查掌握发生期，在低龄幼虫集中取食阶段采用生物制剂或对口药剂防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 74,
+      "class_name": "Panonchus citri McGregor",
+      "category_type": "pest",
+      "crop": "柑橘",
+      "pest_group": "螨类害虫",
+      "harm_or_symptom": "Panonchus citri McGregor 属于螨类害虫。多在叶背、嫩梢或果面刺吸危害，造成褪绿斑、锈斑、卷叶和长势衰弱，高温干旱时扩展较快。",
+      "trigger_conditions": "高温干旱、用药不当破坏天敌、树势或苗势偏弱时易出现高密度发生。",
+      "suggested_actions": "加强田间湿度和虫口监测，保护捕食螨等天敌，必要时轮换使用专用杀螨剂，避免长期单一用药。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 3,
+          "critical": 8
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 75,
+      "class_name": "Phyllocoptes oleiverus ashmead",
+      "category_type": "pest",
+      "crop": "柑橘",
+      "pest_group": "螨类害虫",
+      "harm_or_symptom": "Phyllocoptes oleiverus ashmead 属于螨类害虫。多在叶背、嫩梢或果面刺吸危害，造成褪绿斑、锈斑、卷叶和长势衰弱，高温干旱时扩展较快。",
+      "trigger_conditions": "高温干旱、用药不当破坏天敌、树势或苗势偏弱时易出现高密度发生。",
+      "suggested_actions": "加强田间湿度和虫口监测，保护捕食螨等天敌，必要时轮换使用专用杀螨剂，避免长期单一用药。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 3,
+          "critical": 8
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 76,
+      "class_name": "Icerya purchasi Maskell",
+      "category_type": "pest",
+      "crop": "柑橘",
+      "pest_group": "蚧类害虫",
+      "harm_or_symptom": "Icerya purchasi Maskell 属于蚧类害虫。多固定在枝条、叶片或果实表面吸汁危害，分泌蜜露并诱发煤污，造成树势衰弱和果品外观下降。",
+      "trigger_conditions": "果园郁闭、通风透光差、冬季清园不足和天敌受抑时虫口容易累积。",
+      "suggested_actions": "冬春清园刮除虫源，保护瓢虫等天敌，若虫孵化盛期使用矿物油或选择性药剂均匀覆盖。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 3,
+          "critical": 8
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 77,
+      "class_name": "Unaspis yanonensis",
+      "category_type": "pest",
+      "crop": "柑橘",
+      "pest_group": "蚧类害虫",
+      "harm_or_symptom": "Unaspis yanonensis 属于蚧类害虫。多固定在枝条、叶片或果实表面吸汁危害，分泌蜜露并诱发煤污，造成树势衰弱和果品外观下降。",
+      "trigger_conditions": "果园郁闭、通风透光差、冬季清园不足和天敌受抑时虫口容易累积。",
+      "suggested_actions": "冬春清园刮除虫源，保护瓢虫等天敌，若虫孵化盛期使用矿物油或选择性药剂均匀覆盖。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 3,
+          "critical": 8
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 78,
+      "class_name": "Ceroplastes rubens",
+      "category_type": "pest",
+      "crop": "柑橘",
+      "pest_group": "蚧类害虫",
+      "harm_or_symptom": "Ceroplastes rubens 属于蚧类害虫。多固定在枝条、叶片或果实表面吸汁危害，分泌蜜露并诱发煤污，造成树势衰弱和果品外观下降。",
+      "trigger_conditions": "果园郁闭、通风透光差、冬季清园不足和天敌受抑时虫口容易累积。",
+      "suggested_actions": "冬春清园刮除虫源，保护瓢虫等天敌，若虫孵化盛期使用矿物油或选择性药剂均匀覆盖。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 3,
+          "critical": 8
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 79,
+      "class_name": "Chrysomphalus aonidum",
+      "category_type": "pest",
+      "crop": "柑橘",
+      "pest_group": "蚧类害虫",
+      "harm_or_symptom": "Chrysomphalus aonidum 属于蚧类害虫。多固定在枝条、叶片或果实表面吸汁危害，分泌蜜露并诱发煤污，造成树势衰弱和果品外观下降。",
+      "trigger_conditions": "果园郁闭、通风透光差、冬季清园不足和天敌受抑时虫口容易累积。",
+      "suggested_actions": "冬春清园刮除虫源，保护瓢虫等天敌，若虫孵化盛期使用矿物油或选择性药剂均匀覆盖。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 3,
+          "critical": 8
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 80,
+      "class_name": "Parlatoria zizyphus Lucus",
+      "category_type": "pest",
+      "crop": "柑橘",
+      "pest_group": "蚧类害虫",
+      "harm_or_symptom": "Parlatoria zizyphus Lucus 属于蚧类害虫。多固定在枝条、叶片或果实表面吸汁危害，分泌蜜露并诱发煤污，造成树势衰弱和果品外观下降。",
+      "trigger_conditions": "果园郁闭、通风透光差、冬季清园不足和天敌受抑时虫口容易累积。",
+      "suggested_actions": "冬春清园刮除虫源，保护瓢虫等天敌，若虫孵化盛期使用矿物油或选择性药剂均匀覆盖。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 3,
+          "critical": 8
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 81,
+      "class_name": "Nipaecoccus vastalor",
+      "category_type": "pest",
+      "crop": "柑橘",
+      "pest_group": "蚧类害虫",
+      "harm_or_symptom": "Nipaecoccus vastalor 属于蚧类害虫。多固定在枝条、叶片或果实表面吸汁危害，分泌蜜露并诱发煤污，造成树势衰弱和果品外观下降。",
+      "trigger_conditions": "果园郁闭、通风透光差、冬季清园不足和天敌受抑时虫口容易累积。",
+      "suggested_actions": "冬春清园刮除虫源，保护瓢虫等天敌，若虫孵化盛期使用矿物油或选择性药剂均匀覆盖。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 3,
+          "critical": 8
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 82,
+      "class_name": "Aleurocanthus spiniferus",
+      "category_type": "pest",
+      "crop": "柑橘",
+      "pest_group": "粉虱类害虫",
+      "harm_or_symptom": "Aleurocanthus spiniferus 属于粉虱类害虫。群集叶背吸汁并分泌蜜露，诱发煤污病，影响光合作用并可能传播病毒病。",
+      "trigger_conditions": "棚室高温、通风差、寄主连续种植和黄板监测不足时易暴发。",
+      "suggested_actions": "悬挂黄板监测，控制棚室湿度和杂草寄主，卵若虫混发时轮换使用不同作用机制药剂。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 3,
+          "critical": 8
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 83,
+      "class_name": "Tetradacus c Bactrocera minax",
+      "category_type": "pest",
+      "crop": "柑橘",
+      "pest_group": "蝇蚊类害虫",
+      "harm_or_symptom": "Tetradacus c Bactrocera minax 属于蝇蚊类害虫。幼虫多潜食叶片、穗部、果实或组织内部，造成虫道、腐烂、畸形和落果，部分种类检疫风险较高。",
+      "trigger_conditions": "高湿、果实成熟期、田间烂果或病残体清理不及时会提高虫源基数。",
+      "suggested_actions": "及时清理受害果和残体，配合诱剂诱杀、套袋、检疫处理和低龄期药剂防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 2,
+          "critical": 5
+        },
+        "confidence_thresholds": {
+          "medium": 0.32,
+          "high": 0.58,
+          "critical": 0.8
+        }
+      }
+    },
+    {
+      "class_id": 84,
+      "class_name": "Dacus dorsalis(Hendel)",
+      "category_type": "pest",
+      "crop": "柑橘",
+      "pest_group": "蝇蚊类害虫",
+      "harm_or_symptom": "Dacus dorsalis(Hendel) 属于蝇蚊类害虫。幼虫多潜食叶片、穗部、果实或组织内部，造成虫道、腐烂、畸形和落果，部分种类检疫风险较高。",
+      "trigger_conditions": "高湿、果实成熟期、田间烂果或病残体清理不及时会提高虫源基数。",
+      "suggested_actions": "及时清理受害果和残体，配合诱剂诱杀、套袋、检疫处理和低龄期药剂防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 2,
+          "critical": 5
+        },
+        "confidence_thresholds": {
+          "medium": 0.32,
+          "high": 0.58,
+          "critical": 0.8
+        }
+      }
+    },
+    {
+      "class_id": 85,
+      "class_name": "Bactrocera tsuneonis",
+      "category_type": "pest",
+      "crop": "柑橘",
+      "pest_group": "蝇蚊类害虫",
+      "harm_or_symptom": "Bactrocera tsuneonis 属于蝇蚊类害虫。幼虫多潜食叶片、穗部、果实或组织内部，造成虫道、腐烂、畸形和落果，部分种类检疫风险较高。",
+      "trigger_conditions": "高湿、果实成熟期、田间烂果或病残体清理不及时会提高虫源基数。",
+      "suggested_actions": "及时清理受害果和残体，配合诱剂诱杀、套袋、检疫处理和低龄期药剂防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 2,
+          "critical": 5
+        },
+        "confidence_thresholds": {
+          "medium": 0.32,
+          "high": 0.58,
+          "critical": 0.8
+        }
+      }
+    },
+    {
+      "class_id": 86,
+      "class_name": "Prodenia litura",
+      "category_type": "pest",
+      "crop": "柑橘",
+      "pest_group": "鳞翅目食叶害虫",
+      "harm_or_symptom": "Prodenia litura 属于鳞翅目食叶害虫。幼虫啃食叶片、嫩梢、花蕾或果面，可形成孔洞、缺刻和卷叶，大发生时造成明显减产。",
+      "trigger_conditions": "温暖季节、成虫迁飞或产卵高峰后，低龄幼虫集中取食期危害增长快。",
+      "suggested_actions": "利用性诱剂、灯诱和田间巡查掌握发生期，在低龄幼虫集中取食阶段采用生物制剂或对口药剂防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 87,
+      "class_name": "Adristyrannus",
+      "category_type": "pest",
+      "crop": "柑橘",
+      "pest_group": "常见农业害虫",
+      "harm_or_symptom": "Adristyrannus 属于常见农业害虫。可取食叶片、茎秆、花器、果实或吸食汁液，导致植株长势下降、产量损失和品质降低。",
+      "trigger_conditions": "柑橘 生长期遇到高温高湿、田间郁闭、杂草较多或虫源基数较高时风险上升。",
+      "suggested_actions": "加强田间巡查和虫情监测，优先采用农业防治、生物防治和物理诱控，必要时选择对口药剂轮换使用。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 88,
+      "class_name": "Phyllocnistis citrella Stainton",
+      "category_type": "pest",
+      "crop": "柑橘",
+      "pest_group": "常见农业害虫",
+      "harm_or_symptom": "Phyllocnistis citrella Stainton 属于常见农业害虫。可取食叶片、茎秆、花器、果实或吸食汁液，导致植株长势下降、产量损失和品质降低。",
+      "trigger_conditions": "柑橘 生长期遇到高温高湿、田间郁闭、杂草较多或虫源基数较高时风险上升。",
+      "suggested_actions": "加强田间巡查和虫情监测，优先采用农业防治、生物防治和物理诱控，必要时选择对口药剂轮换使用。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 89,
+      "class_name": "Toxoptera citricidus",
+      "category_type": "pest",
+      "crop": "柑橘",
+      "pest_group": "刺吸式害虫",
+      "harm_or_symptom": "Toxoptera citricidus 属于刺吸式害虫。成虫或若虫吸食叶片、嫩梢和穗部汁液，易导致叶片失绿、卷曲、煤污病或病毒病传播风险上升。",
+      "trigger_conditions": "高温少雨、氮肥偏多、嫩梢旺长和天敌数量不足时容易快速繁殖。",
+      "suggested_actions": "保护天敌，减少氮肥偏施；发生初期可用黄板、诱集和选择性药剂控制，重点喷施叶背和嫩梢部位。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 3,
+          "critical": 8
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 90,
+      "class_name": "Toxoptera aurantii",
+      "category_type": "pest",
+      "crop": "柑橘",
+      "pest_group": "刺吸式害虫",
+      "harm_or_symptom": "Toxoptera aurantii 属于刺吸式害虫。成虫或若虫吸食叶片、嫩梢和穗部汁液，易导致叶片失绿、卷曲、煤污病或病毒病传播风险上升。",
+      "trigger_conditions": "高温少雨、氮肥偏多、嫩梢旺长和天敌数量不足时容易快速繁殖。",
+      "suggested_actions": "保护天敌，减少氮肥偏施；发生初期可用黄板、诱集和选择性药剂控制，重点喷施叶背和嫩梢部位。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 3,
+          "critical": 8
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 91,
+      "class_name": "Aphis citricola Vander Goot",
+      "category_type": "pest",
+      "crop": "柑橘",
+      "pest_group": "常见农业害虫",
+      "harm_or_symptom": "Aphis citricola Vander Goot 属于常见农业害虫。可取食叶片、茎秆、花器、果实或吸食汁液，导致植株长势下降、产量损失和品质降低。",
+      "trigger_conditions": "柑橘 生长期遇到高温高湿、田间郁闭、杂草较多或虫源基数较高时风险上升。",
+      "suggested_actions": "加强田间巡查和虫情监测，优先采用农业防治、生物防治和物理诱控，必要时选择对口药剂轮换使用。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 92,
+      "class_name": "Scirtothrips dorsalis Hood",
+      "category_type": "pest",
+      "crop": "芒果",
+      "pest_group": "蓟马类害虫",
+      "harm_or_symptom": "Scirtothrips dorsalis Hood 属于蓟马类害虫。常锉吸嫩叶、花器和幼果组织，形成银白色斑痕、畸形或落花落果，干旱少雨时风险较高。",
+      "trigger_conditions": "干旱少雨、花期或嫩梢期持续较长、周边杂草寄主较多时风险上升。",
+      "suggested_actions": "使用蓝板监测和诱杀，清除田间杂草，在花期或嫩梢期选择低残留药剂并注意轮换作用机制。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 3,
+          "critical": 8
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 93,
+      "class_name": "Dasineura sp",
+      "category_type": "pest",
+      "crop": "芒果",
+      "pest_group": "常见农业害虫",
+      "harm_or_symptom": "Dasineura sp 属于常见农业害虫。可取食叶片、茎秆、花器、果实或吸食汁液，导致植株长势下降、产量损失和品质降低。",
+      "trigger_conditions": "芒果 生长期遇到高温高湿、田间郁闭、杂草较多或虫源基数较高时风险上升。",
+      "suggested_actions": "加强田间巡查和虫情监测，优先采用农业防治、生物防治和物理诱控，必要时选择对口药剂轮换使用。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 94,
+      "class_name": "Lawana imitata Melichar",
+      "category_type": "pest",
+      "crop": "芒果",
+      "pest_group": "刺吸式害虫",
+      "harm_or_symptom": "Lawana imitata Melichar 属于刺吸式害虫。成虫或若虫吸食叶片、嫩梢和穗部汁液，易导致叶片失绿、卷曲、煤污病或病毒病传播风险上升。",
+      "trigger_conditions": "高温少雨、氮肥偏多、嫩梢旺长和天敌数量不足时容易快速繁殖。",
+      "suggested_actions": "保护天敌，减少氮肥偏施；发生初期可用黄板、诱集和选择性药剂控制，重点喷施叶背和嫩梢部位。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 3,
+          "critical": 8
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 95,
+      "class_name": "Salurnis marginella Guerr",
+      "category_type": "pest",
+      "crop": "芒果",
+      "pest_group": "刺吸式害虫",
+      "harm_or_symptom": "Salurnis marginella Guerr 属于刺吸式害虫。成虫或若虫吸食叶片、嫩梢和穗部汁液，易导致叶片失绿、卷曲、煤污病或病毒病传播风险上升。",
+      "trigger_conditions": "高温少雨、氮肥偏多、嫩梢旺长和天敌数量不足时容易快速繁殖。",
+      "suggested_actions": "保护天敌，减少氮肥偏施；发生初期可用黄板、诱集和选择性药剂控制，重点喷施叶背和嫩梢部位。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 3,
+          "critical": 8
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 96,
+      "class_name": "Deporaus marginatus Pascoe",
+      "category_type": "pest",
+      "crop": "芒果",
+      "pest_group": "象甲类害虫",
+      "harm_or_symptom": "Deporaus marginatus Pascoe 属于象甲类害虫。成虫取食叶片、嫩梢或果实，幼虫可蛀食种子、果核、根部或茎部，造成缺刻、落果和商品性下降。",
+      "trigger_conditions": "成虫羽化期、果实膨大期、土壤和落果中越冬虫源较多时危害明显。",
+      "suggested_actions": "结合人工摘除虫果、清园翻土和诱捕监测，在成虫出土或产卵前后开展综合防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 2,
+          "critical": 5
+        },
+        "confidence_thresholds": {
+          "medium": 0.32,
+          "high": 0.58,
+          "critical": 0.8
+        }
+      }
+    },
+    {
+      "class_id": 97,
+      "class_name": "Chlumetia transversa",
+      "category_type": "pest",
+      "crop": "芒果",
+      "pest_group": "鳞翅目食叶害虫",
+      "harm_or_symptom": "Chlumetia transversa 属于鳞翅目食叶害虫。幼虫啃食叶片、嫩梢、花蕾或果面，可形成孔洞、缺刻和卷叶，大发生时造成明显减产。",
+      "trigger_conditions": "温暖季节、成虫迁飞或产卵高峰后，低龄幼虫集中取食期危害增长快。",
+      "suggested_actions": "利用性诱剂、灯诱和田间巡查掌握发生期，在低龄幼虫集中取食阶段采用生物制剂或对口药剂防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 98,
+      "class_name": "Mango flat beak leafhopper",
+      "category_type": "pest",
+      "crop": "芒果",
+      "pest_group": "刺吸式害虫",
+      "harm_or_symptom": "Mango flat beak leafhopper 属于刺吸式害虫。成虫或若虫吸食叶片、嫩梢和穗部汁液，易导致叶片失绿、卷曲、煤污病或病毒病传播风险上升。",
+      "trigger_conditions": "高温少雨、氮肥偏多、嫩梢旺长和天敌数量不足时容易快速繁殖。",
+      "suggested_actions": "保护天敌，减少氮肥偏施；发生初期可用黄板、诱集和选择性药剂控制，重点喷施叶背和嫩梢部位。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 3,
+          "critical": 8
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 99,
+      "class_name": "Rhytidodera bowrinii white",
+      "category_type": "pest",
+      "crop": "芒果",
+      "pest_group": "常见农业害虫",
+      "harm_or_symptom": "Rhytidodera bowrinii white 属于常见农业害虫。可取食叶片、茎秆、花器、果实或吸食汁液，导致植株长势下降、产量损失和品质降低。",
+      "trigger_conditions": "芒果 生长期遇到高温高湿、田间郁闭、杂草较多或虫源基数较高时风险上升。",
+      "suggested_actions": "加强田间巡查和虫情监测，优先采用农业防治、生物防治和物理诱控，必要时选择对口药剂轮换使用。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 4,
+          "critical": 10
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    },
+    {
+      "class_id": 100,
+      "class_name": "Sternochetus frigidus",
+      "category_type": "pest",
+      "crop": "芒果",
+      "pest_group": "象甲类害虫",
+      "harm_or_symptom": "Sternochetus frigidus 属于象甲类害虫。成虫取食叶片、嫩梢或果实，幼虫可蛀食种子、果核、根部或茎部，造成缺刻、落果和商品性下降。",
+      "trigger_conditions": "成虫羽化期、果实膨大期、土壤和落果中越冬虫源较多时危害明显。",
+      "suggested_actions": "结合人工摘除虫果、清园翻土和诱捕监测，在成虫出土或产卵前后开展综合防治。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 2,
+          "critical": 5
+        },
+        "confidence_thresholds": {
+          "medium": 0.32,
+          "high": 0.58,
+          "critical": 0.8
+        }
+      }
+    },
+    {
+      "class_id": 101,
+      "class_name": "Cicadellidae",
+      "category_type": "pest",
+      "crop": "芒果",
+      "pest_group": "刺吸式害虫",
+      "harm_or_symptom": "Cicadellidae 属于刺吸式害虫。成虫或若虫吸食叶片、嫩梢和穗部汁液，易导致叶片失绿、卷曲、煤污病或病毒病传播风险上升。",
+      "trigger_conditions": "高温少雨、氮肥偏多、嫩梢旺长和天敌数量不足时容易快速繁殖。",
+      "suggested_actions": "保护天敌，减少氮肥偏施；发生初期可用黄板、诱集和选择性药剂控制，重点喷施叶背和嫩梢部位。",
+      "risk_rule": {
+        "count_thresholds": {
+          "medium": 1,
+          "high": 3,
+          "critical": 8
+        },
+        "confidence_thresholds": {
+          "medium": 0.3,
+          "high": 0.55,
+          "critical": 0.78
+        }
+      }
+    }
+  ]
+}

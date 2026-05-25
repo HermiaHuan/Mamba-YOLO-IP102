@@ -6,6 +6,7 @@ import re
 import urllib.error
 import urllib.request
 from datetime import datetime
+from pathlib import Path
 
 
 RISK_PRIORITY = {"low": 0, "medium": 1, "high": 2, "critical": 3}
@@ -16,9 +17,31 @@ RISK_LABELS = {
     "critical": "极高风险",
 }
 
+PROJECT_ROOT = Path(__file__).resolve().parent
+ENV_FILE = PROJECT_ROOT / ".env"
+
 
 class DiagnosisAPIError(RuntimeError):
     pass
+
+
+def load_local_env(env_file: Path = ENV_FILE) -> None:
+    """Load simple KEY=VALUE pairs from .env without adding a dependency."""
+    if not env_file.exists():
+        return
+
+    for raw_line in env_file.read_text(encoding="utf-8").splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        key = key.strip()
+        value = value.strip().strip("'\"")
+        if key and key not in os.environ:
+            os.environ[key] = value
+
+
+load_local_env()
 
 
 def calculate_risk_level(count: int, max_confidence: float, risk_rule: dict | None) -> str:
@@ -75,13 +98,13 @@ def _extract_json_object(text: str) -> dict:
 
 
 def call_llm_api(context: dict) -> dict:
-    api_key = os.getenv("AGRI_LLM_API_KEY", "").strip()
+    api_key = (os.getenv("AGRI_LLM_API_KEY", "") or os.getenv("OPENAI_API_KEY", "")).strip()
     api_url = os.getenv("AGRI_LLM_API_URL", "https://api.openai.com/v1/chat/completions").strip()
     model_name = os.getenv("AGRI_LLM_MODEL", "gpt-4o-mini").strip()
     timeout = float(os.getenv("AGRI_LLM_TIMEOUT", "20"))
 
     if not api_key:
-        raise DiagnosisAPIError("未配置 AGRI_LLM_API_KEY。")
+        raise DiagnosisAPIError("未配置 OPENAI_API_KEY 或 AGRI_LLM_API_KEY。")
 
     system_prompt = (
         "你是一名农业病虫害诊断助手。"

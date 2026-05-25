@@ -8,6 +8,7 @@ from typing import Iterable, Sequence
 
 PROJECT_ROOT = Path(__file__).resolve().parent
 DEFAULT_CLASS_FILE = PROJECT_ROOT / "datasets" / "pest102" / "classes.txt"
+PEST_KNOWLEDGE_FILE = PROJECT_ROOT / "data" / "ip102_pest_knowledge.json"
 DISEASE_SEED_FILE = PROJECT_ROOT / "data" / "agri_disease_knowledge.json"
 
 PEST = "pest"
@@ -16,9 +17,12 @@ DISEASE = "disease"
 
 def load_default_class_names(class_file: Path | None = None) -> list[str]:
     source = class_file or DEFAULT_CLASS_FILE
-    if not source.exists():
-        return []
-    return [line.strip() for line in source.read_text(encoding="utf-8").splitlines() if line.strip()]
+    if source.exists():
+        return [line.strip() for line in source.read_text(encoding="utf-8").splitlines() if line.strip()]
+
+    entries = _load_seed_entries(PEST_KNOWLEDGE_FILE)
+    names = [str(entry.get("class_name", "")).strip() for entry in entries]
+    return [name for name in names if name]
 
 
 def _load_seed_entries(seed_path: Path) -> list[dict]:
@@ -108,6 +112,7 @@ def _normalize_entry(entry: dict) -> dict:
         "class_name": class_name,
         "category_type": category_type,
         "crop": entry.get("crop") or _infer_crop(class_name, category_type),
+        "pest_group": entry.get("pest_group", ""),
         "harm_or_symptom": entry.get("harm_or_symptom") or fallback["harm_or_symptom"],
         "trigger_conditions": entry.get("trigger_conditions") or fallback["trigger_conditions"],
         "suggested_actions": entry.get("suggested_actions") or fallback["suggested_actions"],
@@ -120,11 +125,14 @@ class KnowledgeBase:
         self,
         runtime_class_names: Sequence[str] | None = None,
         *,
+        pest_seed_path: Path | None = None,
         seed_path: Path | None = None,
         persist_path: Path | None = None,
     ) -> None:
         self.runtime_class_names = list(runtime_class_names or load_default_class_names())
-        self.seed_entries = _load_seed_entries(seed_path or DISEASE_SEED_FILE)
+        self.pest_seed_entries = _load_seed_entries(pest_seed_path or PEST_KNOWLEDGE_FILE)
+        self.disease_seed_entries = _load_seed_entries(seed_path or DISEASE_SEED_FILE)
+        self.seed_entries = self.pest_seed_entries + self.disease_seed_entries
         self.entries = self._build_entries()
         self.index_by_name = {entry["class_name"]: entry for entry in self.entries}
         if persist_path is not None:
@@ -195,7 +203,14 @@ class KnowledgeBase:
                 continue
             haystack = " ".join(
                 str(entry.get(field, ""))
-                for field in ("class_name", "crop", "harm_or_symptom", "trigger_conditions", "suggested_actions")
+                for field in (
+                    "class_name",
+                    "crop",
+                    "pest_group",
+                    "harm_or_symptom",
+                    "trigger_conditions",
+                    "suggested_actions",
+                )
             ).lower()
             if normalized_keyword and normalized_keyword not in haystack:
                 continue

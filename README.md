@@ -11,8 +11,8 @@
 - 当前 classification 版 IP102 可自动生成整图框伪检测标签，先跑通检测训练流程。
 - 若数据包中存在 VOC XML 标注，转换脚本会自动生成真实 YOLO 检测框。
 - 提供 Gradio Web 前端，支持图片上传、模型推理、结果预览和类别统计。
-- 内置农业病虫害知识库，可展示作物、危害症状、发生条件和防治建议。
-- 支持调用 OpenAI 兼容大模型接口生成智能诊断；接口不可用时自动回退到本地模板诊断。
+- 内置独立 IP102 害虫知识库，可展示作物、害虫类型、危害症状、发生条件和防治建议。
+- 支持调用 OpenAI 兼容大模型接口生成 AI 辅助诊断，同时固定展示本地农业知识库诊断。
 - 默认训练输出目录和前端权重路径统一，便于服务器训练和本地演示协作。
 
 ## 目录结构
@@ -24,6 +24,7 @@ Mamba-YOLO-IP102/
 ├── diagnosis_service.py                # AI 诊断与本地模板兜底逻辑
 ├── knowledge_base.py                   # 农业知识库构建、检索和风险规则
 ├── data/
+│   ├── ip102_pest_knowledge.json       # 覆盖 IP102 102 类害虫的基础知识库
 │   └── agri_disease_knowledge.json     # 病害知识库种子条目
 ├── scripts/
 │   └── prepare_ip102_dataset.py        # IP102 数据集转换脚本
@@ -178,19 +179,34 @@ Gradio 会自动选择可用本地端口，终端会显示访问地址。
 
 ## AI 智能诊断
 
-系统会将检测统计、农业知识库命中结果和用户填写的环境补充信息组装为结构化上下文。
+系统会将检测统计、农业知识库命中结果和用户填写的环境补充信息组装为结构化上下文。前端会同时展示两类结果：
 
-如果配置了 OpenAI 兼容接口，前端会调用大模型生成诊断：
+- `AI 辅助诊断`：配置 API Key 后调用 OpenAI 兼容大模型生成。
+- `农业知识库诊断`：始终基于本地 `data/ip102_pest_knowledge.json` 和风险规则生成，离线也可使用。
+
+本项目不能使用 Codex/ChatGPT 的账号密码直接登录接入，工程代码应使用 API Key。推荐在项目根目录创建 `.env`，配置一次后每次 `python3 app.py` 会自动读取：
 
 ```bash
-export AGRI_LLM_API_KEY=你的_API_KEY
-export AGRI_LLM_API_URL=https://api.openai.com/v1/chat/completions
-export AGRI_LLM_MODEL=gpt-4o-mini
-export AGRI_LLM_TIMEOUT=20
+cp .env.example .env
+```
+
+然后打开 `.env` 填入：
+
+```text
+OPENAI_API_KEY=你的_API_KEY
+AGRI_LLM_API_URL=https://api.openai.com/v1/chat/completions
+AGRI_LLM_MODEL=gpt-4o-mini
+AGRI_LLM_TIMEOUT=20
+```
+
+也可以继续使用环境变量方式：
+
+```bash
+export OPENAI_API_KEY=你的_API_KEY
 python3 app.py
 ```
 
-如果没有配置 API Key、网络不可用或接口返回异常，系统会自动使用本地模板诊断，保证答辩演示时页面仍然可用。
+如果没有配置 API Key、网络不可用或接口返回异常，AI 辅助诊断区域会显示不可用原因，农业知识库诊断仍会正常生成，保证答辩演示时页面可用。
 
 诊断记录默认写入：
 

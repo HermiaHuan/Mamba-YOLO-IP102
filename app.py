@@ -24,7 +24,14 @@ except ImportError as exc:
     YOLO = None
     YOLO_IMPORT_ERROR = exc
 
-from diagnosis_service import build_structured_context, calculate_risk_level, generate_diagnosis, risk_label
+from diagnosis_service import (
+    build_structured_context,
+    calculate_risk_level,
+    call_llm_api,
+    format_diagnosis_text,
+    render_local_template,
+    risk_label,
+)
 from knowledge_base import DISEASE, PEST, KnowledgeBase, load_default_class_names
 
 
@@ -524,6 +531,7 @@ def format_kb_hits(kb_hits: list[dict]) -> str:
                     f"### {entry['class_name']}",
                     f"- 类别类型: {entry['category_type']}",
                     f"- 关联作物: {entry['crop']}",
+                    f"- 害虫类型: {entry.get('pest_group') or '未细分'}",
                     f"- 危害/症状: {entry['harm_or_symptom']}",
                     f"- 发生条件: {entry['trigger_conditions']}",
                     f"- 建议措施: {entry['suggested_actions']}",
@@ -541,14 +549,14 @@ def save_runtime_record(record: dict) -> None:
 
 def run_unified_inference(input_image, task_type: str, confidence_threshold: float, environment_note: str):
     if not input_image:
-        return "请先上传图片。", None, "", "", "", ""
+        return "请先上传图片。", None, "", "", "", "", ""
 
     if YOLO is None:
-        return f"模型依赖未就绪: {YOLO_IMPORT_ERROR}", None, "", "", "", ""
+        return f"模型依赖未就绪: {YOLO_IMPORT_ERROR}", None, "", "", "", "", ""
 
     weight_path = default_model_path()
     if not weight_path.exists():
-        return f"未找到模型权重: {weight_path}", None, "", "", "", ""
+        return f"未找到模型权重: {weight_path}", None, "", "", "", "", ""
 
     try:
         model = load_model(str(weight_path))
@@ -574,7 +582,19 @@ def run_unified_inference(input_image, task_type: str, confidence_threshold: flo
             kb_hits,
             environment_note=environment_note,
         )
-        diagnosis_source, _, diagnosis_text = generate_diagnosis(structured_context)
+        knowledge_payload = render_local_template(structured_context)
+        knowledge_diagnosis_text = format_diagnosis_text(knowledge_payload)
+
+        try:
+            ai_payload = call_llm_api(structured_context)
+            ai_source = "AI 大模型"
+            ai_diagnosis_text = format_diagnosis_text(ai_payload)
+        except Exception as exc:
+            ai_source = "AI 未启用或调用失败"
+            ai_diagnosis_text = (
+                f"AI 辅助诊断暂不可用：{exc}\n\n"
+                "系统已保留农业知识库诊断结果，可继续用于本地演示和基础防治建议。"
+            )
 
         summary_lines = [
             f"任务类型: {task_type}",
@@ -582,7 +602,8 @@ def run_unified_inference(input_image, task_type: str, confidence_threshold: flo
             f"原始检测目标数: {len(raw_predictions)}",
             f"当前模式目标数: {len(filtered_predictions)}",
             f"知识库命中数: {len(kb_hits)}",
-            f"诊断来源: {diagnosis_source}",
+            f"AI 诊断状态: {ai_source}",
+            "知识库诊断状态: 已生成",
         ]
 
         supported_count = get_runtime_category_count(expected_category, kb)
@@ -600,8 +621,9 @@ def run_unified_inference(input_image, task_type: str, confidence_threshold: flo
                 "filtered_predictions": filtered_predictions,
                 "class_stats": class_stats,
                 "kb_hits": kb_hits,
-                "diagnosis_source": diagnosis_source,
-                "diagnosis_text": diagnosis_text,
+                "ai_diagnosis_source": ai_source,
+                "ai_diagnosis_text": ai_diagnosis_text,
+                "knowledge_diagnosis_text": knowledge_diagnosis_text,
                 "environment_note": environment_note.strip(),
             }
         )
@@ -611,11 +633,12 @@ def run_unified_inference(input_image, task_type: str, confidence_threshold: flo
             annotated_image,
             format_class_stats(class_stats),
             format_kb_hits(kb_hits),
-            diagnosis_source,
-            diagnosis_text,
+            ai_source,
+            ai_diagnosis_text,
+            knowledge_diagnosis_text,
         )
     except Exception as exc:
-        return f"推理失败: {exc}", None, "", "", "", ""
+        return f"推理失败: {exc}", None, "", "", "", "", ""
 
 
 def category_to_value(label: str) -> str:
@@ -630,6 +653,7 @@ def format_database_rows(entries: list[dict]) -> list[list[str]]:
                 entry.get("class_name", ""),
                 "害虫" if entry.get("category_type", PEST) == PEST else "病害",
                 entry.get("crop", ""),
+                entry.get("pest_group", ""),
                 entry.get("harm_or_symptom", ""),
                 entry.get("suggested_actions", ""),
             ]
@@ -651,6 +675,7 @@ def format_database_markdown(entries: list[dict], keyword: str, category_label: 
                     f"### {entry.get('class_name', '')}",
                     f"- 类型: {'害虫' if entry.get('category_type', PEST) == PEST else '病害'}",
                     f"- 作物: {entry.get('crop', '')}",
+                    f"- 害虫类型: {entry.get('pest_group') or '未细分'}",
                     f"- 危害/症状: {entry.get('harm_or_symptom', '')}",
                     f"- 发生条件: {entry.get('trigger_conditions', '')}",
                     f"- 建议措施: {entry.get('suggested_actions', '')}",
@@ -672,8 +697,8 @@ def build_database_overview_html() -> str:
     return "\n".join(
         [
             '<section class="quick-card-grid">',
-            f'<div class="quick-card"><div class="quick-card-title">知识库总条目</div><div class="quick-card-text">{len(kb.entries)} 条农业病虫害知识条目，包含运行时 IP102 害虫类别与病害种子条目。</div></div>',
-            f'<div class="quick-card"><div class="quick-card-title">害虫条目</div><div class="quick-card-text">{counts.get(PEST, 0)} 条。IP102 类别会自动补全危害、发生条件、防治建议和风险规则。</div></div>',
+            f'<div class="quick-card"><div class="quick-card-title">知识库总条目</div><div class="quick-card-text">{len(kb.entries)} 条农业病虫害知识条目，包含独立 IP102 害虫知识库与病害种子条目。</div></div>',
+            f'<div class="quick-card"><div class="quick-card-title">害虫条目</div><div class="quick-card-text">{counts.get(PEST, 0)} 条。data/ip102_pest_knowledge.json 覆盖 IP102 102 类害虫基础知识。</div></div>',
             f'<div class="quick-card"><div class="quick-card-title">病害条目</div><div class="quick-card-text">{counts.get(DISEASE, 0)} 条。可用于知识检索和 AI 诊断上下文扩展。</div></div>',
             "</section>",
         ]
@@ -715,7 +740,8 @@ def build_system_info_markdown() -> str:
         [
             "",
             "## AI 诊断环境变量",
-            "- `AGRI_LLM_API_KEY`: 大模型 API Key，不配置时自动使用本地模板诊断。",
+            "- `.env`: 项目根目录可放置一次性配置文件，后续 `python3 app.py` 会自动读取。",
+            "- `OPENAI_API_KEY` 或 `AGRI_LLM_API_KEY`: 大模型 API Key，不配置时 AI 辅助诊断会提示未启用。",
             "- `AGRI_LLM_API_URL`: OpenAI 兼容接口地址，默认 `https://api.openai.com/v1/chat/completions`。",
             "- `AGRI_LLM_MODEL`: 诊断模型名称，默认 `gpt-4o-mini`。",
             "- `AGRI_LLM_TIMEOUT`: 请求超时秒数，默认 `20`。",
@@ -725,7 +751,7 @@ def build_system_info_markdown() -> str:
             "1. 上传一张田间图片，选择 `害虫检测` 或 `病害检测`。",
             "2. 当前 IP102 权重主要支持害虫类别；病害检测页保留为知识库与未来统一模型扩展入口。",
             "3. 系统会先做模型推理，再按任务类型过滤结果并命中农业知识库。",
-            "4. 若配置了 AI API，会调用模型生成诊断；否则回退到本地模板。",
+            "4. 若配置了 AI API，会调用模型生成 AI 辅助诊断；农业知识库诊断始终显示。",
             "5. 运行诊断记录会写入 `runtime_records/diagnosis_history.jsonl`。",
         ]
     )
@@ -743,7 +769,7 @@ def build_hero_html() -> str:
             '<section class="hero-banner">',
             '<div class="hero-kicker">Mamba Vision Terminal · IP102 Pest Detection · Knowledge Diagnosis</div>',
             f'<h1 class="hero-title">{PROJECT_EN_NAME}</h1>',
-            f'<div class="hero-subtitle">{PROJECT_CN_NAME}基于 Mamba-YOLO-T 与 IP102 数据集构建，集成目标检测、农业知识库检索、AI 智能诊断与本地模板兜底，形成适合毕设演示的完整病虫害视觉诊断链路。</div>',
+            f'<div class="hero-subtitle">{PROJECT_CN_NAME}基于 Mamba-YOLO-T 与 IP102 数据集构建，集成目标检测、农业知识库检索、AI 辅助诊断与本地知识库诊断，形成适合毕设演示的完整病虫害视觉诊断链路。</div>',
             '<div class="hero-chip-row">',
             f'<div class="hero-chip"><div class="hero-chip-label">当前模型状态</div><div class="hero-chip-value">{model_status()}</div></div>',
             f'<div class="hero-chip"><div class="hero-chip-label">前端当前调用</div><div class="hero-chip-value">{MODEL_SOURCE_LABEL}</div></div>',
@@ -762,7 +788,7 @@ def build_overview_cards_html() -> str:
             '<section class="quick-card-grid">',
             '<div class="quick-card"><div class="quick-card-title">统一识别入口</div><div class="quick-card-text">上传田间图片后统一调用 Mamba-YOLO 权重，并按任务类型过滤害虫或病害结果。</div></div>',
             '<div class="quick-card"><div class="quick-card-title">农业知识库增强</div><div class="quick-card-text">检测结果会命中本地农业数据库，展示关联作物、危害症状、发生条件和防治建议。</div></div>',
-            '<div class="quick-card"><div class="quick-card-title">AI / 本地双路诊断</div><div class="quick-card-text">配置 API Key 时调用大模型生成诊断；不可用时自动回退到本地模板，保证答辩演示稳定。</div></div>',
+            '<div class="quick-card"><div class="quick-card-title">AI + 知识库双路诊断</div><div class="quick-card-text">配置 .env 后调用大模型生成 AI 建议，同时固定显示本地农业知识库诊断，便于人工复核。</div></div>',
             "</section>",
         ]
     )
@@ -836,11 +862,23 @@ def create_interface():
                         gr.HTML('<div class="panel-note">展示当前识别结果命中的农业知识条目，作为 AI 诊断上下文。</div>')
                         kb_hits_output = gr.Markdown()
 
+                with gr.Row(equal_height=True):
+                    with gr.Column(elem_classes=["panel-card", "diagnosis-card"]):
+                        gr.HTML('<div class="section-caption">AI Diagnosis</div>')
+                        gr.HTML('<div class="panel-heading">AI 辅助诊断</div>')
+                        gr.HTML('<div class="panel-note">读取项目根目录 .env 中的 API Key 后调用大模型生成诊断；未配置时显示调用状态。</div>')
+                        ai_diagnosis_output = gr.Markdown()
+
+                    with gr.Column(elem_classes=["panel-card", "diagnosis-card"]):
+                        gr.HTML('<div class="section-caption">Knowledge Diagnosis</div>')
+                        gr.HTML('<div class="panel-heading">农业知识库诊断</div>')
+                        gr.HTML('<div class="panel-note">始终基于本地 102 类害虫知识库和风险规则生成，适合作为离线兜底结果。</div>')
+                        knowledge_diagnosis_output = gr.Markdown()
+
                 with gr.Column(elem_classes=["panel-card", "diagnosis-card"]):
                     gr.HTML('<div class="section-caption">Diagnosis Layer</div>')
-                    gr.HTML('<div class="panel-heading">AI 智能诊断输出</div>')
-                    gr.HTML('<div class="panel-note">优先调用大模型 API 生成诊断，若接口不可用则自动回退到本地模板诊断。</div>')
-                    diagnosis_output = gr.Markdown()
+                    gr.HTML('<div class="panel-heading">诊断说明</div>')
+                    gr.HTML('<div class="panel-note">左侧为大模型根据检测统计、知识库命中和环境信息生成的综合建议；右侧为本地知识库规则结果，两者同时保留，便于答辩展示和人工复核。</div>')
 
                 click_kwargs = filter_supported_kwargs(
                     submit_btn.click,
@@ -852,7 +890,8 @@ def create_interface():
                         class_stats_output,
                         kb_hits_output,
                         diagnosis_source_output,
-                        diagnosis_output,
+                        ai_diagnosis_output,
+                        knowledge_diagnosis_output,
                     ],
                     api_name=False,
                     show_api=False,
@@ -880,8 +919,8 @@ def create_interface():
                 with gr.Column(elem_classes=["panel-card"]):
                     gr.HTML('<div class="panel-heading">结果表格</div>')
                     database_table = gr.Dataframe(
-                        headers=["类别", "类型", "作物", "危害/症状", "建议措施"],
-                        datatype=["str", "str", "str", "str", "str"],
+                        headers=["类别", "类型", "作物", "害虫类型", "危害/症状", "建议措施"],
+                        datatype=["str", "str", "str", "str", "str", "str"],
                         interactive=False,
                     )
                 search_kwargs = filter_supported_kwargs(
