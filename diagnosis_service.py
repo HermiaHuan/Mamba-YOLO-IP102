@@ -98,10 +98,44 @@ def _extract_json_object(text: str) -> dict:
             raise DiagnosisAPIError("LLM 返回 JSON 解析失败。") from exc
 
 
+def _split_model_list(value: str) -> list[str]:
+    return [item.strip() for item in value.split(",") if item.strip()]
+
+
+def _build_model_chain() -> list[str]:
+    explicit_chain = os.getenv("AGRI_LLM_MODELS", "").strip()
+    if explicit_chain:
+        raw_models = _split_model_list(explicit_chain)
+    else:
+        primary_model = os.getenv("AGRI_LLM_MODEL", "gpt-4o-mini").strip()
+        fallback_models = os.getenv("AGRI_LLM_FALLBACK_MODELS", "gpt-4o,gpt-5-mini,gpt-5").strip()
+        raw_models = [primary_model] + _split_model_list(fallback_models)
+
+    model_chain = []
+    seen = set()
+    for model in raw_models:
+        if model and model not in seen:
+            model_chain.append(model)
+            seen.add(model)
+    return model_chain or ["gpt-4o-mini", "gpt-4o"]
+
+
+def _is_model_unavailable_error(body: str) -> bool:
+    lowered_body = body.lower()
+    model_error_tokens = ("model_not_found", "model not found", "无可用渠道", "no available", "unsupported model")
+    return any(token in lowered_body for token in model_error_tokens)
+
+
+def _should_try_next_model(status_code: int, body: str) -> bool:
+    if status_code in {429, 500, 502, 503, 504}:
+        return True
+    return _is_model_unavailable_error(body)
+
+
 def call_llm_api(context: dict) -> dict:
     api_key = (os.getenv("AGRI_LLM_API_KEY", "") or os.getenv("OPENAI_API_KEY", "")).strip()
     api_url = os.getenv("AGRI_LLM_API_URL", "https://api.openai.com/v1/chat/completions").strip()
-    model_name = os.getenv("AGRI_LLM_MODEL", "gpt-4o-mini").strip()
+    model_chain = _build_model_chain()
     timeout = float(os.getenv("AGRI_LLM_TIMEOUT", "20"))
     retries = int(os.getenv("AGRI_LLM_RETRIES", "2"))
 
@@ -117,65 +151,67 @@ def call_llm_api(context: dict) -> dict:
     )
     user_prompt = json.dumps(context, ensure_ascii=False, indent=2)
 
-    payload = {
-        "model": model_name,
-        "temperature": 0.2,
-        "messages": [
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_prompt},
-        ],
-    }
-    request = urllib.request.Request(
-        api_url,
-        data=json.dumps(payload).encode("utf-8"),
-        headers={
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {api_key}",
-        },
-        method="POST",
-    )
-
-    response_payload = None
-    last_error = None
+    model_errors = []
     retryable_statuses = {429, 500, 502, 503, 504}
-    for attempt in range(retries + 1):
-        try:
-            with urllib.request.urlopen(request, timeout=timeout) as response:
-                raw_response = response.read().decode("utf-8")
+    for model_name in model_chain:
+        payload = {
+            "model": model_name,
+            "temperature": 0.2,
+            "messages": [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt},
+            ],
+        }
+        request = urllib.request.Request(
+            api_url,
+            data=json.dumps(payload).encode("utf-8"),
+            headers={
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {api_key}",
+            },
+            method="POST",
+        )
+
+        for attempt in range(retries + 1):
             try:
-                response_payload = json.loads(raw_response)
-            except json.JSONDecodeError as exc:
-                raise DiagnosisAPIError("LLM API 返回内容不是合法 JSON。") from exc
-            break
-        except urllib.error.HTTPError as exc:
-            last_error = exc
-            body = exc.read().decode("utf-8", errors="replace").strip()
-            body_hint = f"，响应内容：{body[:300]}" if body else ""
-            if exc.code in retryable_statuses and attempt < retries:
-                time.sleep(min(2**attempt, 4))
-                continue
-            raise DiagnosisAPIError(
-                f"LLM API 调用失败: HTTP {exc.code} {exc.reason}，"
-                f"接口：{api_url}，模型：{model_name}{body_hint}"
-            ) from exc
-        except urllib.error.URLError as exc:
-            last_error = exc
-            if attempt < retries:
-                time.sleep(min(2**attempt, 4))
-                continue
-            raise DiagnosisAPIError(
-                f"LLM API 调用失败: 网络或网关错误 {exc.reason}，接口：{api_url}，模型：{model_name}"
-            ) from exc
+                with urllib.request.urlopen(request, timeout=timeout) as response:
+                    raw_response = response.read().decode("utf-8")
+                try:
+                    response_payload = json.loads(raw_response)
+                except json.JSONDecodeError as exc:
+                    raise DiagnosisAPIError("LLM API 返回内容不是合法 JSON。") from exc
 
-    if response_payload is None:
-        raise DiagnosisAPIError(f"LLM API 调用失败: {last_error}") from last_error
+                try:
+                    content = response_payload["choices"][0]["message"]["content"]
+                except (KeyError, IndexError, TypeError) as exc:
+                    raise DiagnosisAPIError("LLM API 返回格式不符合预期。") from exc
+                try:
+                    return _extract_json_object(content)
+                except DiagnosisAPIError as exc:
+                    model_errors.append(f"{model_name}: {exc}")
+                    break
+            except urllib.error.HTTPError as exc:
+                body = exc.read().decode("utf-8", errors="replace").strip()
+                body_hint = f"，响应内容：{body[:300]}" if body else ""
+                error_message = f"{model_name}: HTTP {exc.code} {exc.reason}，接口：{api_url}{body_hint}"
+                if exc.code in retryable_statuses and not _is_model_unavailable_error(body) and attempt < retries:
+                    time.sleep(min(2**attempt, 4))
+                    continue
+                model_errors.append(error_message)
+                if not _should_try_next_model(exc.code, body):
+                    raise DiagnosisAPIError(f"LLM API 调用失败: {error_message}") from exc
+                break
+            except urllib.error.URLError as exc:
+                error_message = f"{model_name}: 网络或网关错误 {exc.reason}，接口：{api_url}"
+                if attempt < retries:
+                    time.sleep(min(2**attempt, 4))
+                    continue
+                model_errors.append(error_message)
+                break
 
-    try:
-        content = response_payload["choices"][0]["message"]["content"]
-    except (KeyError, IndexError, TypeError) as exc:
-        raise DiagnosisAPIError("LLM API 返回格式不符合预期。") from exc
-
-    return _extract_json_object(content)
+    tried_models = " -> ".join(model_chain)
+    detail = "；".join(model_errors[-3:]) if model_errors else "无详细错误"
+    raise DiagnosisAPIError(f"LLM API 调用失败: 已按顺序尝试 {tried_models}，均不可用。最后错误：{detail}")
 
 
 def render_local_template(context: dict) -> dict:
@@ -222,12 +258,22 @@ def render_local_template(context: dict) -> dict:
     }
 
 
+def _format_payload_value(value, default: str = "暂无") -> str:
+    if value in (None, ""):
+        return default
+    if isinstance(value, list):
+        return "；".join(str(item) for item in value if str(item).strip()) or default
+    if isinstance(value, dict):
+        return json.dumps(value, ensure_ascii=False)
+    return str(value)
+
+
 def format_diagnosis_text(payload: dict) -> str:
     return (
-        f"诊断结论：{payload.get('diagnosis_conclusion', '暂无')}\n\n"
-        f"风险等级：{payload.get('risk_level', '低风险')}\n\n"
-        f"防治建议：{payload.get('control_advice', '暂无')}\n\n"
-        f"注意事项：{payload.get('precautions', '暂无')}"
+        f"诊断结论：{_format_payload_value(payload.get('diagnosis_conclusion'))}\n\n"
+        f"风险等级：{_format_payload_value(payload.get('risk_level'), '低风险')}\n\n"
+        f"防治建议：{_format_payload_value(payload.get('control_advice'))}\n\n"
+        f"注意事项：{_format_payload_value(payload.get('precautions'))}"
     )
 
 
