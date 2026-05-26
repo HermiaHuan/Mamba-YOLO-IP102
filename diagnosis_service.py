@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import os
 import re
+import time
 import urllib.error
 import urllib.request
 from datetime import datetime
@@ -102,6 +103,7 @@ def call_llm_api(context: dict) -> dict:
     api_url = os.getenv("AGRI_LLM_API_URL", "https://api.openai.com/v1/chat/completions").strip()
     model_name = os.getenv("AGRI_LLM_MODEL", "gpt-4o-mini").strip()
     timeout = float(os.getenv("AGRI_LLM_TIMEOUT", "20"))
+    retries = int(os.getenv("AGRI_LLM_RETRIES", "2"))
 
     if not api_key:
         raise DiagnosisAPIError("未配置 OPENAI_API_KEY 或 AGRI_LLM_API_KEY。")
@@ -133,13 +135,40 @@ def call_llm_api(context: dict) -> dict:
         method="POST",
     )
 
-    try:
-        with urllib.request.urlopen(request, timeout=timeout) as response:
-            response_payload = json.loads(response.read().decode("utf-8"))
-    except urllib.error.URLError as exc:
-        raise DiagnosisAPIError(f"LLM API 调用失败: {exc}") from exc
-    except json.JSONDecodeError as exc:
-        raise DiagnosisAPIError("LLM API 返回内容不是合法 JSON。") from exc
+    response_payload = None
+    last_error = None
+    retryable_statuses = {429, 500, 502, 503, 504}
+    for attempt in range(retries + 1):
+        try:
+            with urllib.request.urlopen(request, timeout=timeout) as response:
+                raw_response = response.read().decode("utf-8")
+            try:
+                response_payload = json.loads(raw_response)
+            except json.JSONDecodeError as exc:
+                raise DiagnosisAPIError("LLM API 返回内容不是合法 JSON。") from exc
+            break
+        except urllib.error.HTTPError as exc:
+            last_error = exc
+            body = exc.read().decode("utf-8", errors="replace").strip()
+            body_hint = f"，响应内容：{body[:300]}" if body else ""
+            if exc.code in retryable_statuses and attempt < retries:
+                time.sleep(min(2**attempt, 4))
+                continue
+            raise DiagnosisAPIError(
+                f"LLM API 调用失败: HTTP {exc.code} {exc.reason}，"
+                f"接口：{api_url}，模型：{model_name}{body_hint}"
+            ) from exc
+        except urllib.error.URLError as exc:
+            last_error = exc
+            if attempt < retries:
+                time.sleep(min(2**attempt, 4))
+                continue
+            raise DiagnosisAPIError(
+                f"LLM API 调用失败: 网络或网关错误 {exc.reason}，接口：{api_url}，模型：{model_name}"
+            ) from exc
+
+    if response_payload is None:
+        raise DiagnosisAPIError(f"LLM API 调用失败: {last_error}") from last_error
 
     try:
         content = response_payload["choices"][0]["message"]["content"]
